@@ -6,8 +6,9 @@ class services {
 	private string $STX; // Start of Text
 	private string $ETX; // End of Text
 	private string $EOT; // End of Transmission
-	private Soap $soap; // End of Transmission
-	private string $import_endpoint_url = 'http://Microsoft.ServiceModel.Samples/ICalculator/Client_Registration_RS';
+
+	private Soap $soap;
+	private string $import_endpoint_url = 'http://Microsoft.ServiceModel.Samples/ICalculator/Load_Services_RS';
 
 	public function __construct() {
 		$this->SOH  = chr( 1 ); // Start of Header
@@ -20,10 +21,14 @@ class services {
 	public function loadServices(): array {
 		$soap_request = $this->soap_request_for_services();
 		$services = $this->soap->send_curl_request( $this->import_endpoint_url, $soap_request );
+
 		return $this->parse_services($services);
 	}
 
-	private function parse_services( $services ) {
+	private function parse_services( $services ): array {
+		if ($services === null) {
+			return [];
+		}
 		$services = str_replace( '&#xD;', '&space&', $services );
 		$serviceInfo    = preg_match( '/\&\#x2;(.*)\&\#x3;/s', $services, $matches );
 		$services       = $matches[1];
@@ -46,7 +51,7 @@ class services {
 	}
 
 	private function soap_request_for_services() {
-		$url                      = $this->import_endpoint_url;
+		$url                      = $this->soap->getImportEndPoint();
 		$data                     = date( 'Y-m-d' );
 		$time                     = date( 'H:i:s' );
 
@@ -60,7 +65,7 @@ class services {
         </soap:Header>
         <soap:Body>
             <mic:Load_Services_RS>
-                <mic:services_rq>[{$this->SOH}][{$this->STX}]|TID100|DAT{$data}|TIM{$time}|NOA1|ART1|PRC|TCL|TGR|TTM|TBS|TSX| AID|TS2|TI1|TI2|TI3|TI4|TL1|TL2|TL3|TL4|TDS|TD2|[{$this->ETX}][{$this->ETX}] </mic:services_rq>
+                <mic:services_rq>[SOH][STX]|TID100|DAT{$data}|TIM{$time}|NOA1|ART1|PRC|TCL|TGR|TTM|TBS|TSX| AID|TS2|TI1|TI2|TI3|TI4|TL1|TL2|TL3|TL4|TDS|TD2|[ETX][EOH] </mic:services_rq>
             </mic:Load_Services_RS>
         </soap:Body>
     </soap:Envelope>

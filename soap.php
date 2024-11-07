@@ -4,7 +4,9 @@ class soap {
 
 	private $import_endpoint_url = 'http://95.77.98.62:8000/GettingStarted/CalculatorService'; // Endpoint pentru import
 
-
+	public function getImportEndPoint(): string {
+		return $this->import_endpoint_url;
+	}
 	public function send_curl_request( $action, $soap_request ) {
 		$url = $this->import_endpoint_url;
 		// Initialize cURL
