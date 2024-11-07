@@ -20,6 +20,8 @@ class services {
 
 	public function loadServices(): array {
 		$soap_request = $this->soap_request_for_services();
+		print_r($soap_request);
+		die();
 		$services = $this->soap->send_curl_request( $this->import_endpoint_url, $soap_request );
 
 		return $this->parse_services($services);
