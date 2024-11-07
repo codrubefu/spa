@@ -9,7 +9,7 @@ class services {
 
 	private Soap $soap;
 	private string $import_endpoint_url = 'http://Microsoft.ServiceModel.Samples/ICalculator/Load_Services_RS';
-
+//this si tes
 	public function __construct() {
 		$this->SOH  = chr( 1 ); // Start of Header
 		$this->STX  = chr( 2 ); // Start of Text
