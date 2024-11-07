@@ -29,7 +29,7 @@ class products {
 	 */
 	private function import_product( $product_data ) {
 
-		$sku                 = $product_data['AID'];
+		$sku = $product_data['AID'];
 		$existing_product_id = wc_get_product_id_by_sku( $sku );
 
 		if ( $existing_product_id ) {
@@ -56,6 +56,9 @@ class products {
 	}
 
 	private function add_product_to_category( $product_id, $category_name ): void {
+		if($category_name == '') {
+			return;
+		}
 		// Check if the category exists
 		$category_id = get_term_by( 'name', $category_name, 'product_cat' );
 
