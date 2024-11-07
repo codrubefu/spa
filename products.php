@@ -77,12 +77,4 @@ class products {
 		wp_set_object_terms( $product_id, $category_id, 'product_cat' );
 	}
 
-	function send_custom_email( $to, $subject, $message, $headers = '', $attachments = array() ) {
-		// Check if the email was sent successfully
-		if ( wp_mail( $to, $subject, $message, $headers, $attachments ) ) {
-			return 'Email sent successfully.';
-		} else {
-			return 'Failed to send email.';
-		}
-	}
 }
