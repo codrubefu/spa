@@ -24,12 +24,13 @@ class soap {
 		] );
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, $soap_request );
 		curl_setopt( $ch, CURLOPT_TIMEOUT, 10 ); // 10 seconds timeout
+		curl_setopt($ch, CURLOPT_HEADER, true); // Include headers in the output
+		curl_setopt($ch, CURLINFO_HEADER_OUT, true); // Track the request headers
 
 		// Execute the request
 		$response  = curl_exec( $ch );
 		$http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
 
-print_r($ch);
 print_r($response);
 die();
 		// Check for errors
