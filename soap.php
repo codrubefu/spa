@@ -28,10 +28,10 @@ class soap {
 		// Execute the request
 		$response  = curl_exec( $ch );
 		$http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-print_r($action);
-print_r($soap_request);
-print_r($http_code);
+
+print_r($ch);
 print_r($response);
+die();
 		// Check for errors
 		if ( $response === false || $http_code !== 200 ) {
 			error_log( 'Eroare cURL: ' . curl_error( $ch ) . ' (Cod HTTP: ' . $http_code . ')' );
