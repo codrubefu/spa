@@ -3,7 +3,6 @@
 class soap {
 
 	private $import_endpoint_url = 'http://95.77.98.62:8000/GettingStarted/CalculatorService'; // Endpoint pentru import
-	//private $import_endpoint_url = 'http://google.com'; // Endpoint pentru import
 
 	public function getImportEndPoint(): string {
 		return $this->import_endpoint_url;
