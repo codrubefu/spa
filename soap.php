@@ -9,7 +9,7 @@ class soap {
 	}
 	public function send_curl_request( $action, $soap_request ) {
 		$url = $this->import_endpoint_url;
-		// Initialize cURL
+		// Initialize cURL test
 		$ch = curl_init( $url );
 
 		// Set cURL options
