@@ -28,7 +28,7 @@ class products {
 	 * @throws Exception
 	 */
 	private function import_product( $product_data ) {
-
+//tet
 		$sku = $product_data['AID'];
 		$existing_product_id = wc_get_product_id_by_sku( $sku );
 
