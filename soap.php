@@ -35,18 +35,6 @@ class soap {
 		$body = substr($response, $header_size);
 
 
-		echo "<pre>";
-		print_r("HTTP Code: " . $http_code);
-		print_r("Header Size: " . $header_size);
-		print_r("Headers: " . $header);
-		print_r("Body: " . $body);
-		if ($response === false) {
-			print_r("cURL Error: " . curl_error($ch));
-		}
-		echo "</pre>";
-		die();
-
-
 		// Check for errors
 		if ( $response === false || $http_code !== 200 ) {
 			error_log( 'Eroare cURL: ' . curl_error( $ch ) . ' (Cod HTTP: ' . $http_code . ')' );
