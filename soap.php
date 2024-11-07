@@ -34,10 +34,9 @@ class soap {
 		$header = substr($response, 0, $header_size);
 		$body = substr($response, $header_size);
 		echo "<pre>";
-print_r(123);
+
 print_r($header_size);
 print_r($header);
-print_r($response);
 die();
 		// Check for errors
 		if ( $response === false || $http_code !== 200 ) {
