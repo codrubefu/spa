@@ -52,7 +52,7 @@ class products {
 		$this->add_product_to_category( $existing_product_id, $product_data['TCL'] );
 
 		$log [] = "Acest produs au fost " . $info . " cu succes: " . $product_data['ART'] . "<br>";
-		$this->send_custom_email( 'codrut_befu@yahoo.com', 'Import produse:', implode( "\n", $log ) );
+	//	$this->send_custom_email( 'codrut_befu@yahoo.com', 'Import produse:', implode( "\n", $log ) );
 	}
 
 	private function add_product_to_category( $product_id, $category_name ): void {
