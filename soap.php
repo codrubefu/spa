@@ -33,16 +33,19 @@ class soap {
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 		$header = substr($response, 0, $header_size);
 		$body = substr($response, $header_size);
-		echo "<pre>";
 
-		// Debugging information
+
 		echo "<pre>";
 		print_r("HTTP Code: " . $http_code);
 		print_r("Header Size: " . $header_size);
 		print_r("Headers: " . $header);
 		print_r("Body: " . $body);
+		if ($response === false) {
+			print_r("cURL Error: " . curl_error($ch));
+		}
 		echo "</pre>";
 		die();
+
 
 		// Check for errors
 		if ( $response === false || $http_code !== 200 ) {
