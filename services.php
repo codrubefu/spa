@@ -24,7 +24,6 @@ class services {
 	}
 
 	private function parse_services( $services ) {
-		$services = file_get_contents( 'services.txt' );
 		$services = str_replace( '&#xD;', '&space&', $services );
 		$serviceInfo    = preg_match( '/\&\#x2;(.*)\&\#x3;/s', $services, $matches );
 		$services       = $matches[1];
