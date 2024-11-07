@@ -30,7 +30,11 @@ class soap {
 		// Execute the request
 		$response  = curl_exec( $ch );
 		$http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-
+		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		$header = substr($response, 0, $header_size);
+		$body = substr($response, $header_size);
+print_r($header_size);
+print_r($header);
 print_r($response);
 die();
 		// Check for errors
