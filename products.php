@@ -60,10 +60,12 @@ class products {
 		$sku = $product_data['AID'];
 		$existing_product_id = wc_get_product_id_by_sku($sku);
 		// Load prices to determine if we need a variable or simple product
-		$price_variations = [];
+		$price_variations = $this->prices->loadPrices($product_data['ART']);
 
 		$is_variable_product = count($price_variations) > 2;
-
+		if ($is_variable_product < 2) {
+			return;
+		}
 
 		if ($existing_product_id) {
 			$product = $is_variable_product ? new WC_Product_Variable($existing_product_id) : new WC_Product($existing_product_id);
@@ -84,7 +86,6 @@ class products {
 		}
 		$product->set_shipping_class_id(1);
 		$product->save();
-
 		$product_id = $product->get_id();
 		$beneficii = $product_data['TI3'];
 		$contra_indicatii = $product_data['TI2'];
