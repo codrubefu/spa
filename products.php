@@ -61,9 +61,7 @@ class products {
 		$existing_product_id = wc_get_product_id_by_sku($sku);
 		// Load prices to determine if we need a variable or simple product
 		$price_variations = $this->prices->loadPrices($product_data['ART']);
-		echo "<pre>";
-print_r($price_variations);
-die();
+
 		$is_variable_product = count($price_variations) > 2;
 		if ($is_variable_product < 2) {
 			return;
@@ -134,6 +132,9 @@ die();
 			$variation->set_attributes(['attribute_pa_pricing-options' => $variation_data['INF']]);
 			$variation->save();
 		}
+		echo "<pre>";
+		print_r($product);
+		die();
 	}
 	private function add_translation($roText,$engText){
 
