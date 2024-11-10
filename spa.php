@@ -96,5 +96,15 @@ class spa {
 
 
 }
+function dump($str) {
+	echo "<pre>";
+	print_r($str);
+	echo "</pre>";
+}
 
+function dd($str) {
+	dump($str);
+	die();
+
+}
 new spa();
