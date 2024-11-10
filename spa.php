@@ -5,13 +5,51 @@ Description: Importă produse prin cURL și trimite o notificare la achiziție p
 Version: 1.0
 Author: Codrut
 */
+require_once 'custom_fields.php';
 require_once 'soap.php';
 require_once 'products.php';
+require_once 'delete.php';
+
+
+// Hook for plugin activation
+register_activation_hook(__FILE__, 'create_custom_woocommerce_attribute');
+
+function create_custom_woocommerce_attribute() {
+	global $wpdb;
+
+	// Define attribute name and slug
+	$attribute_name = 'Optiuni';
+	$attribute_slug = wc_sanitize_taxonomy_name(stripslashes('pricing-options'));
+
+	// Check if the attribute already exists
+	$attribute_id = $wpdb->get_var($wpdb->prepare(
+		"SELECT attribute_id FROM {$wpdb->prefix}woocommerce_attribute_taxonomies WHERE attribute_name = %s",
+		$attribute_slug
+	));
+
+	// If attribute doesn't exist, create it
+	if (!$attribute_id) {
+		$args = [
+			'attribute_label'   => $attribute_name,
+			'attribute_name'    => $attribute_slug,
+			'attribute_type'    => 'select',
+			'attribute_orderby' => 'menu_order',
+			'attribute_public'  => 0, // Set to 1 if you want it to be visible on product pages
+		];
+
+		// Insert attribute into WooCommerce attribute taxonomy table
+		$wpdb->insert("{$wpdb->prefix}woocommerce_attribute_taxonomies", $args);
+
+		// Flush WooCommerce cache and permalinks
+		delete_transient('wc_attribute_taxonomies');
+		wc_delete_product_transients();
+	}
+}
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Protecție acces direct
-
+error_reporting( E_ALL );
 class spa {
 
 	private products $products;
@@ -36,6 +74,7 @@ class spa {
 	public function manual_import_endpoint() {
 		// Verifică dacă acțiunea personalizată a fost solicitată și dacă utilizatorul are permisiunile necesare
 		if ( isset( $_GET['action'] ) && $_GET['action'] === 'run_import_products' && current_user_can( 'manage_options' ) ) {
+
 			$this->products->import_products();
 			wp_die( 'Importul de produse a fost executat cu succes.' );
 		}

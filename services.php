@@ -21,8 +21,8 @@ class services {
 	public function loadServices(): array {
 		$soap_request = $this->soap_request_for_services();
 
-		$services = $this->soap->send_curl_request( $this->import_endpoint_url, $soap_request );
-
+		//$services = $this->soap->send_curl_request( $this->import_endpoint_url, $soap_request );
+		$services = file_get_contents(__DIR__.'/products.txt');
 		return $this->parse_services($services);
 	}
 
@@ -31,7 +31,7 @@ class services {
 			return [];
 		}
 		$services = str_replace( '&#xD;', '&space&', $services );
-		$serviceInfo    = preg_match( '/\&\#x2;(.*)\&\#x3;/s', $services, $matches );
+		preg_match( '/\&\#x2;(.*)\&\#x3;/s', $services, $matches );
 		$services       = $matches[1];
 		$services2array = explode( '|', $services );
 		foreach ( $services2array as $row ) {
