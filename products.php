@@ -37,9 +37,6 @@ class products {
 		$this->create_option_attribute();
 		if ( $product_data && is_array( $product_data ) ) {
 			foreach ( $product_data as $product ) {
-				if($product['AID'] != '544'){
-					continue;
-				}
 				$this->import_product( $product );
 			}
 		}
@@ -55,6 +52,14 @@ class products {
 		return null;
 	}
 
+	private function get_term_id_by_value($term_value, $taxonomy): ?int {
+		$term = get_term_by('name', $term_value, $taxonomy);
+		if ($term) {
+			return $term->term_id;
+		}
+		return null; // Return null if the term is not found
+	}
+
 
 	protected function import_product($product_data) {
 		$sku = $product_data['AID'];
@@ -66,14 +71,12 @@ class products {
 		if ($is_variable_product < 2) {
 			return;
 		}
-
 		if ($existing_product_id) {
 			$product = $is_variable_product ? new WC_Product_Variable($existing_product_id) : new WC_Product($existing_product_id);
 		} else {
 			$product = $is_variable_product ? new WC_Product_Variable() : new WC_Product();
 			$product->set_sku($sku);
 		}
-
 		// Set common product properties
 		$product->set_name($product_data['ART']);
 		$product->set_description($product_data['TBS']);
@@ -101,17 +104,24 @@ class products {
 		$attribute_taxonomy = $this->get_attribute_taxonomy_by_slug($attribute_slug);
 
 		if ($attribute_taxonomy) {
+
 			$attribute_data = new WC_Product_Attribute();
 			$attribute_data->set_id($attribute_taxonomy->attribute_id);
 			$attribute_data->set_name(wc_attribute_taxonomy_name($attribute_taxonomy->attribute_name));
-			$attribute_data->set_options(array_column($price_variations, 'INF'));
+
+			$terms = array_column($price_variations, 'INF');
+			$termsIds = [];
+			foreach ($terms as $term){
+				$termsIds[]=$this->get_term_id_by_value($term, 'pa_'.$attribute_taxonomy->attribute_name);
+			}
+
+			$attribute_data->set_options($termsIds);
 			$attribute_data->set_position(0);
 			$attribute_data->set_visible(1);
 			$attribute_data->set_variation(1);
 
 			$product->set_attributes([$attribute_data]);
 			$product->save();
-
 			foreach ($price_variations as $variation_data) {
 				if (!term_exists($variation_data['INF'], 'pa_'.$attribute_taxonomy->attribute_name)) {
 					wp_insert_term($variation_data['INF'], 'pa_'.$attribute_taxonomy->attribute_name);
@@ -129,12 +139,12 @@ class products {
 			$variation->set_sku($variableSku);
 			$variation->set_name( $product->get_name() . '<span>-</span> ' . $variation_data['INF']);
 			$variation->set_regular_price($variation_data['PRC']);
-			$variation->set_attributes(['attribute_pa_pricing-options' => $variation_data['INF']]);
+			$variation->set_attributes(['attribute_pa_pricing-options' => wc_sanitize_taxonomy_name($variation_data['INF'])]);
+
 			$variation->save();
+
 		}
-		echo "<pre>";
-		print_r($product);
-		die();
+		$product->save();
 	}
 	private function add_translation($roText,$engText){
 
