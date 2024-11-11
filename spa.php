@@ -9,6 +9,7 @@ require_once 'custom_fields.php';
 require_once 'soap.php';
 require_once 'products.php';
 require_once 'delete.php';
+require_once 'finalize_order.php';
 
 
 // Hook for plugin activation
@@ -46,6 +47,28 @@ function create_custom_woocommerce_attribute() {
 	}
 }
 
+
+// Add this code to your plugin or theme's functions.php file
+
+// Add custom rewrite rule
+function add_custom_endpoint() {
+	add_rewrite_rule('^test-order-completed/([0-9]+)/?', 'index.php?test_order_completed=$matches[1]', 'top');
+	add_rewrite_tag('%test_order_completed%', '([0-9]+)');
+}
+add_action('init', 'add_custom_endpoint');
+
+// Handle the custom endpoint
+function handle_custom_endpoint() {
+	global $wp_query;
+	if (isset($wp_query->query_vars['test_order_completed'])) {
+		$order_id = intval($wp_query->query_vars['test_order_completed']);
+		$finalize_order = new finalize_order();
+		$finalize_order->on_order_completed($order_id);
+		exit;
+	}
+}
+add_action('template_redirect', 'handle_custom_endpoint');
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Protecție acces direct
@@ -60,8 +83,7 @@ class spa {
 		add_action( 'init', [ $this, 'schedule_import' ] );
 		add_action( 'woocommerce_curl_import_event', [ $this, 'import_products' ] );
 
-		// Hook pentru apel cURL la finalizarea unei comenzi
-		add_action( 'woocommerce_order_status_completed', [ $this, 'notify_curl_on_purchase' ] );
+
 
 		// Programare/deprogramare cron la activare/dezactivare
 		register_activation_hook( __FILE__, [ $this, 'activate_cron' ] );
