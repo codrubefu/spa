@@ -1,13 +1,50 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} // Exit if accessed directly
+
+include_plugin_files();
 
 class soap {
 
 	private $import_endpoint_url = 'http://95.77.98.62:8000/GettingStarted/CalculatorService'; // Endpoint pentru import
 
+	private string $SOH; // Start of Header
+	private string $STX; // Start of Text
+	private string $ETX; // End of Text
+	private string $EOT; // End of Transmission
+
+	public function __construct() {
+		$this->SOH  = chr( 1 ); // Start of Header
+		$this->STX  = chr( 2 ); // Start of Text
+		$this->ETX  = chr( 3 ); // End of Text
+		$this->EOT  = chr( 4 ); // End of Transmission
+	}
+
+	public function startOfLine(): string {
+		return '[SOH][STX]';
+	}
+
+	public function endOfLine(): string {
+		return '[ETX][EOH]';
+	}
+
+
+
 	public function getImportEndPoint(): string {
 		return $this->import_endpoint_url;
 	}
-	public function send_curl_request( $action, $soap_request ) {
+
+	public function arrayToSoapText($array): string {
+		$soap_text = '';
+		foreach ($array as $key => $value){
+			$soap_text .= "|$key$value";
+		}
+
+		return $soap_text;
+	}
+
+	public function send_curl_request( $action, $soap_request ): bool|string|null {
 		$url = $this->import_endpoint_url;
 		// Initialize cURL test
 		$ch = curl_init( $url );
@@ -33,8 +70,11 @@ class soap {
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 		$header = substr($response, 0, $header_size);
 		$body = substr($response, $header_size);
+		print_r($body);
+		print_r('
 
 
+');
 		// Check for errors
 		if ( $response === false || $http_code !== 200 ) {
 			error_log( 'Eroare cURL: ' . curl_error( $ch ) . ' (Cod HTTP: ' . $http_code . ')' );

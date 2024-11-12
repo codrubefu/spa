@@ -1,6 +1,9 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} // Exit if accessed directly
 
-require_once 'soap.php';
+include_plugin_files();
 
 class prices {
 	private string $import_endpoint_url = 'http://Microsoft.ServiceModel.Samples/ICalculator/Load_Price_RS';

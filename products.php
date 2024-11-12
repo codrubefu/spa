@@ -1,40 +1,25 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} // Exit if accessed directly
 
-require_once 'services.php';
-require_once 'prices.php';
+include_plugin_files();
 
 class products {
 
 	private services $services;
 	private prices $prices;
-	private $attribute_name = 'Option';
 
 	public function __construct() {
 		$this->services = new services();
 		$this->prices   = new prices();
 	}
 
-	private function create_option_attribute() {
 
-		$taxonomy = 'pa_' . wc_sanitize_taxonomy_name($this->attribute_name);
-
-		if (!taxonomy_exists($taxonomy)) {
-			$args = [
-				'slug'         => $taxonomy,
-				'type'         => 'select',
-				'orderby'      => 'menu_order',
-				'has_archives' => false,
-				'public'       => true,
-				'show_in_rest' => true,
-			];
-			wc_create_attribute($args);
-		}
-	}
 
 	public function import_products() {
 		$product_data = $this->services->loadServices();
 		//replace
-		$this->create_option_attribute();
 		if ( $product_data && is_array( $product_data ) ) {
 			foreach ( $product_data as $product ) {
 				$this->import_product( $product );
@@ -90,14 +75,17 @@ class products {
 		$product->set_shipping_class_id(1);
 		$product->save();
 		$product_id = $product->get_id();
-		$beneficii = $product_data['TI3'];
+		$beneficii = $product_data['TI1'];
 		$contra_indicatii = $product_data['TI2'];
-		$indication = $product_data['TI2'];
+		$indication = $product_data['TI3'];
 
 		update_post_meta($product_id, '_beneficii', wp_kses_post($beneficii));
 		update_post_meta($product_id, '_indicatii', wp_kses_post($indication));
 		update_post_meta($product_id, '_contra_indicatii', wp_kses_post($contra_indicatii));
-
+		$this->add_translation($product_data['TI1'],$product_data['TL1']);
+		$this->add_translation($product_data['TI2'],$product_data['TL2']);
+		$this->add_translation($product_data['TI3'],$product_data['TL3']);
+		$this->add_translation($product_data['TBS'],$product_data['TS2']);
 		// Step 2: Add attribute for variations (e.g., "Pricing Options")
 		$attribute_slug = 'pricing-options';
 

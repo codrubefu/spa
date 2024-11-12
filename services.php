@@ -1,20 +1,15 @@
 <?php
-require_once 'soap.php';
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} // Exit if accessed directly
+
+include_plugin_files();
 
 class services {
-	private string $SOH; // Start of Header
-	private string $STX; // Start of Text
-	private string $ETX; // End of Text
-	private string $EOT; // End of Transmission
-
 	private Soap $soap;
 	private string $import_endpoint_url = 'http://Microsoft.ServiceModel.Samples/ICalculator/Load_Services_RS';
 //this si tes
 	public function __construct() {
-		$this->SOH  = chr( 1 ); // Start of Header
-		$this->STX  = chr( 2 ); // Start of Text
-		$this->ETX  = chr( 3 ); // End of Text
-		$this->EOT  = chr( 4 ); // End of Transmission
 		$this->soap = new soap();
 	}
 
@@ -60,7 +55,7 @@ class services {
                    xmlns:mic="http://Microsoft.ServiceModel.Samples">
         <soap:Header>
             <wsa:To>$url</wsa:To>
-            <wsa:Action>http://Microsoft.ServiceModel.Samples/ICalculator/Load_Services_RS</wsa:Action>
+            <wsa:Action>$this->import_endpoint_url</wsa:Action>
         </soap:Header>
         <soap:Body>
             <mic:Load_Services_RS>

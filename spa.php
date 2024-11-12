@@ -5,31 +5,38 @@ Description: Importă produse prin cURL și trimite o notificare la achiziție p
 Version: 1.0
 Author: Codrut
 */
-require_once 'custom_fields.php';
-require_once 'soap.php';
-require_once 'products.php';
-require_once 'delete.php';
-require_once 'finalize_order.php';
 
+
+function include_plugin_files() {
+	require_once plugin_dir_path( __FILE__ ) . 'soap.php';
+	require_once plugin_dir_path( __FILE__ ) . 'services.php';
+	require_once plugin_dir_path( __FILE__ ) . 'products.php';
+	require_once plugin_dir_path( __FILE__ ) . 'prices.php';
+	require_once plugin_dir_path( __FILE__ ) . 'finalize_order.php';
+	require_once plugin_dir_path( __FILE__ ) . 'custom_fields.php';
+	require_once plugin_dir_path( __FILE__ ) . 'order/order.php';
+	require_once plugin_dir_path( __FILE__ ) . 'order/customer.php';
+	require_once plugin_dir_path( __FILE__ ) . 'order/partner.php';
+}
 
 // Hook for plugin activation
-register_activation_hook(__FILE__, 'create_custom_woocommerce_attribute');
+register_activation_hook( __FILE__, 'create_custom_woocommerce_attribute' );
 
 function create_custom_woocommerce_attribute() {
 	global $wpdb;
 
 	// Define attribute name and slug
 	$attribute_name = 'Optiuni';
-	$attribute_slug = wc_sanitize_taxonomy_name(stripslashes('pricing-options'));
+	$attribute_slug = wc_sanitize_taxonomy_name( stripslashes( 'pricing-options' ) );
 
 	// Check if the attribute already exists
-	$attribute_id = $wpdb->get_var($wpdb->prepare(
+	$attribute_id = $wpdb->get_var( $wpdb->prepare(
 		"SELECT attribute_id FROM {$wpdb->prefix}woocommerce_attribute_taxonomies WHERE attribute_name = %s",
 		$attribute_slug
-	));
+	) );
 
 	// If attribute doesn't exist, create it
-	if (!$attribute_id) {
+	if ( ! $attribute_id ) {
 		$args = [
 			'attribute_label'   => $attribute_name,
 			'attribute_name'    => $attribute_slug,
@@ -39,10 +46,10 @@ function create_custom_woocommerce_attribute() {
 		];
 
 		// Insert attribute into WooCommerce attribute taxonomy table
-		$wpdb->insert("{$wpdb->prefix}woocommerce_attribute_taxonomies", $args);
+		$wpdb->insert( "{$wpdb->prefix}woocommerce_attribute_taxonomies", $args );
 
 		// Flush WooCommerce cache and permalinks
-		delete_transient('wc_attribute_taxonomies');
+		delete_transient( 'wc_attribute_taxonomies' );
 		wc_delete_product_transients();
 	}
 }
@@ -52,37 +59,40 @@ function create_custom_woocommerce_attribute() {
 
 // Add custom rewrite rule
 function add_custom_endpoint() {
-	add_rewrite_rule('^test-order-completed/([0-9]+)/?', 'index.php?test_order_completed=$matches[1]', 'top');
-	add_rewrite_tag('%test_order_completed%', '([0-9]+)');
+	add_rewrite_rule( '^test-order-completed/([0-9]+)/?', 'index.php?test_order_completed=$matches[1]', 'top' );
+	add_rewrite_tag( '%test_order_completed%', '([0-9]+)' );
 }
-add_action('init', 'add_custom_endpoint');
+
+add_action( 'init', 'add_custom_endpoint' );
 
 // Handle the custom endpoint
 function handle_custom_endpoint() {
 	global $wp_query;
-	if (isset($wp_query->query_vars['test_order_completed'])) {
-		$order_id = intval($wp_query->query_vars['test_order_completed']);
+	if ( isset( $wp_query->query_vars['test_order_completed'] ) ) {
+		$order_id       = intval( $wp_query->query_vars['test_order_completed'] );
 		$finalize_order = new finalize_order();
-		$finalize_order->on_order_completed($order_id);
+		$finalize_order->onOrderCompleted( $order_id );
 		exit;
 	}
 }
-add_action('template_redirect', 'handle_custom_endpoint');
+
+add_action( 'template_redirect', 'handle_custom_endpoint' );
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Protecție acces direct
 error_reporting( E_ALL );
+
 class spa {
 
 	private products $products;
 
 	public function __construct() {
+		include_plugin_files();
 		$this->products = new products();
 		// Hook pentru importul periodic de produse
 		add_action( 'init', [ $this, 'schedule_import' ] );
 		add_action( 'woocommerce_curl_import_event', [ $this, 'import_products' ] );
-
 
 
 		// Programare/deprogramare cron la activare/dezactivare
