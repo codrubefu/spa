@@ -155,14 +155,16 @@ class products {
 
 		if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name) {
 			foreach ($en as $key=>$value){
-				$wpdb->insert(
-					$table_name,
-					[
-						'original' => trim($ro[$key]),
-						'translated' => trim($en[$key]),
-						'status' => '2'
-					]
-				);
+				if(isset($ro[$key]) && isset($en[$key])) {
+					$wpdb->insert(
+						$table_name,
+						[
+							'original'   => trim( $ro[ $key ] ),
+							'translated' => trim( $en[ $key ] ),
+							'status'     => '2'
+						]
+					);
+				}
 
 			}
 		}
