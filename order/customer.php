@@ -33,10 +33,9 @@ class customer {
 		$clientInfo['DAT'] = date('Y-m-d'); // Date of transmission, VarChar(10): Format YYYY-MM-DD
 		$clientInfo['TIM'] = date('H:i:s'); // Time of transmission, VarChar(8): Format HH:MM:SS
 		$clientInfo['TYP'] = 'Website'; // Type of Client, VarChar(50): Default is "Website"
-		$clientInfo['DTB'] = ''; // Date of Birth, VarChar(10): Format YYYY-MM-DD
+		$clientInfo['DTB'] = '1983-10-28'; // Date of Birth, VarChar(10): Format YYYY-MM-DD
 		$clientInfo['CLH'] = '0'; // Client Group Account, Numeric(9): 0 for website client type, or parent’s MasterSPA Client ID for children
 		$clientInfo['COD'] = ''; // QRCode, VarChar(20): RFIDCardID, QRCode, or BarCode for client identification at reception
-		$soapCartInfo['PTN'] = ''; // Partner ID, Numeric(9): Company ID for issuing the fiscal invoice
 
 		return $this->soap->arrayToSoapText($clientInfo);
 

@@ -24,9 +24,9 @@ class finalize_order {
 		// Ensure the order exists and is paid
 		$order = wc_get_order( $order_id );
 
-		$this->order->sendOrderToSoap($order);
+		//$this->order->sendOrderToSoap($order);
 		$this->customer->sendCustomerToSoap($order);
-		$this->partner->sendPartnerToSoap($order);
+	//	$this->partner->sendPartnerToSoap($order);
 
 
 		if ( $order && $order->is_paid() ) {

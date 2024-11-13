@@ -46,6 +46,12 @@ class prices {
 			}
 		}
 
+		foreach ($priceInfo as $key=>$value){
+			if(!isset($priceInfo[$key]['INF'])){
+				$priceInfo[$key]['INF'] = 'Pret de baza';
+			}
+		}
+
 		return $priceInfo;
 	}
 
