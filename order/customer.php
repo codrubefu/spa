@@ -45,10 +45,7 @@ class customer {
 
 	public function sendCustomerToSoap($order): void {
 		$info = $this->getOrderInfo($order);
-print_r($this->soapRequestForCustomerRegistration( $info ));
-print_r('
 
-' );
 		$this->soap->send_curl_request( $this->action, $this->soapRequestForCustomerRegistration( $info ) );
 	}
 

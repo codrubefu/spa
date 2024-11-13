@@ -69,10 +69,7 @@ class order {
 
 	public function sendOrderToSoap($order): void {
 		$info = $this->getOrderInfo($order);
-		print_r($this->soapRequestForOrderRegistration( $info ));
-		print_r('
 
-' );
 		$this->soap->send_curl_request($this->action,$this->soapRequestForOrderRegistration($info));
 	}
 

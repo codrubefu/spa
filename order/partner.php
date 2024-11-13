@@ -41,11 +41,7 @@ class partner {
 
 	public function sendPartnerToSoap( $order ): void {
 		$info = $this->getOrderInfo( $order );
-		print_r($this->soapRequestForPartnerRegistration( $info ));
-		print_r('
 
-' );
-		die();
 		$this->soap->send_curl_request( $this->action, $this->soapRequestForPartnerRegistration( $info ) );
 	}
 

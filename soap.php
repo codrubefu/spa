@@ -15,29 +15,28 @@ class soap {
 	private string $EOT; // End of Transmission
 
 	public function __construct() {
-		$this->SOH  = chr( 1 ); // Start of Header
-		$this->STX  = chr( 2 ); // Start of Text
-		$this->ETX  = chr( 3 ); // End of Text
-		$this->EOT  = chr( 4 ); // End of Transmission
+		$this->SOH = chr( 0x01); // Start of Header
+		$this->STX = chr( 0x02); // Start of Text
+		$this->ETX = chr( 0x03); // End of Text
+		$this->EOT = chr( 0x04); // End of Transmission
 	}
 
 	public function startOfLine(): string {
-		return '[SOH][STX]';
+		return base64_encode($this->SOH.$this->STX);
 	}
 
 	public function endOfLine(): string {
-		return '[ETX][EOH]';
+		return base64_encode($this->ETX.$this->EOT);
 	}
-
 
 
 	public function getImportEndPoint(): string {
 		return $this->import_endpoint_url;
 	}
 
-	public function arrayToSoapText($array): string {
+	public function arrayToSoapText( $array ): string {
 		$soap_text = '';
-		foreach ($array as $key => $value){
+		foreach ( $array as $key => $value ) {
 			$soap_text .= "|$key$value";
 		}
 
@@ -61,20 +60,20 @@ class soap {
 		] );
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, $soap_request );
 		curl_setopt( $ch, CURLOPT_TIMEOUT, 10 ); // 10 seconds timeout
-		curl_setopt($ch, CURLOPT_HEADER, true); // Include headers in the output
-		curl_setopt($ch, CURLINFO_HEADER_OUT, true); // Track the request headers
+		curl_setopt( $ch, CURLOPT_HEADER, true ); // Include headers in the output
+		curl_setopt( $ch, CURLINFO_HEADER_OUT, true ); // Track the request headers
 
 		// Execute the request
-		$response  = curl_exec( $ch );
-		$http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$header = substr($response, 0, $header_size);
-		$body = substr($response, $header_size);
-		print_r($body);
-		print_r('
+		$response    = curl_exec( $ch );
+		$http_code   = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+		$header_size = curl_getinfo( $ch, CURLINFO_HEADER_SIZE );
+		$header      = substr( $response, 0, $header_size );
+		$body        = substr( $response, $header_size );
+		print_r( $body );
+		print_r( '
 
 
-');
+' );
 		// Check for errors
 		if ( $response === false || $http_code !== 200 ) {
 			error_log( 'Eroare cURL: ' . curl_error( $ch ) . ' (Cod HTTP: ' . $http_code . ')' );
