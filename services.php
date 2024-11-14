@@ -16,9 +16,6 @@ class services {
 	public function loadServices(): array {
 		$soap_request = $this->soap_request_for_services();
 		$services = $this->soap->send_curl_request( $this->import_endpoint_url, $soap_request );
-		echo "<pre>";
-		print_r( $this->parse_services($services));
-		die();
 		return $this->parse_services($services);
 	}
 
