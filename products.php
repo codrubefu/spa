@@ -159,8 +159,8 @@ class products {
 					$wpdb->insert(
 						$table_name,
 						[
-							'original'   => trim( $ro[ $key ] ),
-							'translated' => trim( $en[ $key ] ),
+							'original'   => trim($ro[$key] ?? ''),
+							'translated' => trim($en[$key] ?? ''),
 							'status'     => '2'
 						]
 					);
