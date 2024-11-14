@@ -8,7 +8,7 @@ include_plugin_files();
 class services {
 	private Soap $soap;
 	private string $import_endpoint_url = 'http://Microsoft.ServiceModel.Samples/ICalculator/Load_Services_RS';
-//this si tes
+
 	public function __construct() {
 		$this->soap = new soap();
 	}
