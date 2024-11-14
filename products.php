@@ -19,6 +19,7 @@ class products {
 
 	public function import_products() {
 		$product_data = $this->services->loadServices();
+		dd($product_data);
 		//replace
 		if ( $product_data && is_array( $product_data ) ) {
 			foreach ( $product_data as $product ) {
@@ -132,8 +133,12 @@ class products {
 			$variation->save();
 
 		}
+
+		$this->add_product_to_category($product_id, $product_data['TCL']);
+
 		$product->save();
 	}
+
 	private function add_translation($roText,$engText){
 
 		if(!trim($engText)){
