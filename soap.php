@@ -69,8 +69,7 @@ class soap {
 		$header_size = curl_getinfo( $ch, CURLINFO_HEADER_SIZE );
 		$header      = substr( $response, 0, $header_size );
 		$body        = substr( $response, $header_size );
-
-		// Check for errors
+	// Check for errors
 		if ( $response === false || $http_code !== 200 ) {
 			error_log( 'Eroare cURL: ' . curl_error( $ch ) . ' (Cod HTTP: ' . $http_code . ')' );
 		} else {

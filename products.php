@@ -112,6 +112,9 @@ class products {
 			$product->set_attributes([$attribute_data]);
 			$product->save();
 			foreach ($price_variations as $variation_data) {
+				if(!$variation_data['INF'] || $variation_data['INF'] == '' ){
+					$variation_data['INF'] = 'Pret de baza';
+				}
 				if (!term_exists($variation_data['INF'], 'pa_'.$attribute_taxonomy->attribute_name)) {
 					wp_insert_term($variation_data['INF'], 'pa_'.$attribute_taxonomy->attribute_name);
 				}
@@ -121,6 +124,9 @@ class products {
 
 		// Step 3: Add each variation
 		foreach ($price_variations as $variation_data) {
+			if(!$variation_data['PRC'] || $variation_data['PRC'] == '' ){
+				continue;
+			}
 			$variableSku = $product->get_name() . ' ' . $variation_data['INF'];
 			$existing_variation_id = wc_get_product_id_by_sku($variableSku);
 			$variation = $existing_variation_id ? new WC_Product_Variation($existing_variation_id) : new WC_Product_Variation();
@@ -176,6 +182,9 @@ class products {
 	}
 
 	private function add_product_to_category( $product_id, $category_name ): void {
+		if($category_name == ''){
+			return;
+		}
 		if($category_name == '') {
 			return;
 		}
