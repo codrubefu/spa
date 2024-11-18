@@ -130,3 +130,26 @@ class spa {
 }
 
 new spa();
+
+
+
+
+class WooCustomTemplateOverrides {
+
+	public function __construct() {
+		add_filter('woocommerce_locate_template', array($this, 'override_woocommerce_template'), 10, 3);
+	}
+
+	/**
+	 * Override WooCommerce template files
+	 */
+	public function override_woocommerce_template($template, $template_name, $template_path) {
+		// Define the custom path for your template overrides
+		$custom_path = plugin_dir_path(__FILE__) . 'templates/' . $template_name;
+
+		// If the custom template exists, use it
+		return file_exists($custom_path) ? $custom_path : $template;
+	}
+}
+
+new WooCustomTemplateOverrides();

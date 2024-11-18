@@ -67,10 +67,10 @@ function display_custom_fields_on_product_page() {
 
 	if ($beneficii || $indicatii || $contra_indicatii) {
 		echo '<div class="product-extra-fields">';
-		if ($beneficii) echo '<p><strong>Beneficii:</strong> ' . wp_kses_post($beneficii) . '</p>';
-		if ($indicatii) echo '<p><strong>Indicatii:</strong> ' . wp_kses_post($indicatii) . '</p>';
-		if ($contra_indicatii) echo '<p><strong>Contra Indicatii:</strong> ' . wp_kses_post($contra_indicatii) . '</p>';
+		if ($beneficii) echo '<div class="col-xs-3"><h2>Beneficii:</h2> ' . wp_kses_post($beneficii) . '</div>';
+		if ($indicatii) echo '<div><h2>Indicatii:</h2> ' . wp_kses_post($indicatii) . '</div>';
+		if ($contra_indicatii) echo '<div><h2>Contra Indicatii:</h2> ' . wp_kses_post($contra_indicatii) . '</div>';
 		echo '</div>';
 	}
 }
-add_action('woocommerce_single_product_summary', 'display_custom_fields_on_product_page', 25);
+add_action('woocommerce_product_after_tabs', 'display_custom_fields_on_product_page', 25);
