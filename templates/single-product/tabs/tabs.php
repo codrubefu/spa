@@ -32,17 +32,6 @@ if ( ! empty( $product_tabs ) ) : ?>
 
 	<div class="woocommerce-tabs wc-tabs-wrapper">
 
-		<?php foreach ( $product_tabs as $key => $product_tab ) : ?>
-			<div>
-				<?php
-					if ( isset( $product_tab['callback'] ) && $product_tab['callback'] == 'woocommerce_product_description_tab'  ) {
-						call_user_func( $product_tab['callback'], $key, $product_tab );
-					}
-
-
-				?>
-			</div>
-		<?php endforeach; ?>
 
 		<?php do_action( 'woocommerce_product_after_tabs' ); ?>
 	</div>

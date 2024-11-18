@@ -146,10 +146,16 @@ class WooCustomTemplateOverrides {
 	public function override_woocommerce_template($template, $template_name, $template_path) {
 		// Define the custom path for your template overrides
 		$custom_path = plugin_dir_path(__FILE__) . 'templates/' . $template_name;
-
 		// If the custom template exists, use it
 		return file_exists($custom_path) ? $custom_path : $template;
 	}
 }
 
 new WooCustomTemplateOverrides();
+
+function enqueue_custom_styles() {
+	wp_enqueue_style('custom-styles', plugin_dir_url(__FILE__) . 'src/style.css');
+}
+
+add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
+
