@@ -22,8 +22,16 @@ class finalize_order {
 	// Define the function that will run when an order is completed
 	public function onOrderCompleted( $order_id ): void {
 		// Ensure the order exists and is paid
-		$order = wc_get_order( $order_id );
-
+		// Get latest 3 orders.
+		$args = array(
+			'id' => $order_id,
+		);
+		$orders = wc_get_orders( $args );
+		if ( ! $orders ) {
+			error_log( 'Order not found: ' . $order_id );
+			return;
+		}
+		$order = $orders[0];
 		$custom_field_user_info_success  = get_post_meta( $order->get_id(), '_custom_field_user_info_success', true );
 		$custom_field_user_order_success = get_post_meta( $order->get_id(), '_custom_field_user_order_success', true );
 
