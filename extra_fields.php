@@ -64,7 +64,7 @@ function display_custom_user_fields_in_admin_order( $order ) {
 	if ( $cui ) {
 		echo '<p><strong>' . __( 'CUI' ) . ':</strong> ' . $cui . '</p>';
 	}
-} 
+}
 
 
 function redirect_to_custom_checkout() {
@@ -74,7 +74,7 @@ function redirect_to_custom_checkout() {
 	}
 }
 
-add_action( 'template_redirect', 'redirect_to_custom_checkout' );
+//add_action( 'template_redirect', 'redirect_to_custom_checkout' );
 
 
 class WooCustomTemplateOverrides {
