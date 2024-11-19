@@ -165,7 +165,7 @@ class WooCustomTemplateOverrides {
 new WooCustomTemplateOverrides();
 
 function enqueue_custom_styles() {
-	wp_enqueue_style( 'custom-styles', plugin_dir_url( __FILE__ ) . 'src/style.css' );
+	wp_enqueue_style( 'custom-styles', plugin_dir_url( __FILE__ ) . 'src/styles.css' );
 }
 
 add_action( 'wp_enqueue_scripts', 'enqueue_custom_styles' );

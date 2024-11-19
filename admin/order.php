@@ -57,3 +57,42 @@ function customFieldToTable( $field, $title ) {
 		}
 	}
 }
+
+add_action('init', 'register_custom_order_status');
+function register_custom_order_status() {
+	register_post_status('wc-spa-error-status', array(
+		'label'                     => 'Comunicarea cu servery-ul Spa Soft a esuat',
+		'public'                    => true,
+		'exclude_from_search'       => false,
+		'show_in_admin_all_list'    => true,
+		'show_in_admin_status_list' => true,
+		'label_count'               => _n_noop('Eroare (%s)', 'Erori (%s)'),
+	));
+}
+
+add_filter('wc_order_statuses', 'add_custom_order_status');
+function add_custom_order_status($order_statuses) {
+	$new_statuses = array();
+
+	foreach ($order_statuses as $key => $status) {
+		$new_statuses[$key] = $status;
+
+		// Insert the custom status after a specific default status, if needed
+		if ('wc-pending' === $key) {
+			$new_statuses['wc-spa-error-status'] = 'Comunicarea cu Master Spa a esuat';
+		}
+	}
+
+	return $new_statuses;
+}
+
+add_action( 'admin_enqueue_scripts', 'enqueue_custom_admin_styles' );
+function enqueue_custom_admin_styles() {
+	echo '<style>
+        .order-status.status-spa-error-status {
+	         background: red !important;
+	         color: white !important;
+            border:1px solid red !important;
+        }
+    </style>';
+}

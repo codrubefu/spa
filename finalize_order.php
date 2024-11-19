@@ -24,6 +24,12 @@ class finalize_order {
 		// Ensure the order exists and is paid
 		$order = wc_get_order( $order_id );
 
+		$custom_field_user_info_success  = get_post_meta( $order->get_id(), '_custom_field_user_info_success', true );
+		$custom_field_user_order_success = get_post_meta( $order->get_id(), '_custom_field_user_order_success', true );
+
+		if($custom_field_user_order_success && $custom_field_user_info_success){
+			return;
+		}
 
 		$customerId = $this->customer->sendCustomerToSoap( $order );
 		if($customerId){
@@ -36,9 +42,6 @@ class finalize_order {
 		if ( $order ) {
 			// Your custom code here
 			error_log( 'Order ' . $order_id . ' has been completed and paid.' );
-
-			// Example: Send a custom email, call an external API, etc.
-			// $this->send_custom_notification( $order );
 		}
 	}
 
