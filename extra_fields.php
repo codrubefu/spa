@@ -16,7 +16,7 @@ function add_custom_checkout_fields( $checkout ) {
 		'class'       => array( 'form-row-wide' ),
 		'label'       => __( 'Bank Account' ),
 		'placeholder' => __( 'Enter your bank account' ),
-		'required'    => true,
+		'required'    => false,
 	), $checkout->get_value( 'bank_account' ) );
 
 	woocommerce_form_field( 'cui', array(
@@ -24,7 +24,7 @@ function add_custom_checkout_fields( $checkout ) {
 		'class'       => array( 'form-row-wide' ),
 		'label'       => __( 'CUI' ),
 		'placeholder' => __( 'Enter your CUI' ),
-		'required'    => true,
+		'required'    => false,
 	), $checkout->get_value( 'cui' ) );
 
 	echo '</div>';
