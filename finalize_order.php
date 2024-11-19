@@ -32,6 +32,7 @@ class finalize_order {
 			return;
 		}
 		$order = $orders[0];
+
 		$custom_field_user_info_success  = get_post_meta( $order->get_id(), '_custom_field_user_info_success', true );
 		$custom_field_user_order_success = get_post_meta( $order->get_id(), '_custom_field_user_order_success', true );
 

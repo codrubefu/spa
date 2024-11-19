@@ -12,8 +12,7 @@ function display_custom_fields_in_admin_order( $order ) {
 		echo '<p style="color:green;font-size:15px"><strong>Spa Soft Info:</strong> Successfully sent to Spa Soft</p>';
 	} else {
 		echo '<p  style="color:red;font-size:15px"><strong>Spa Soft Info:</strong> Failed to send to Spa Soft</p>';
-		echo '<a href="http://localhost:8090/?resend_order='.$order->get_id().'" >Retrimite orderul catre server</a>';
-	}
+		echo '<a href="' . home_url( '/?resend_order=' . $order->get_id() ) . '" >Retrimite orderul catre server</a>';	}
 
 	echo '<div id="custom-fields-section" style="margin-top: 20px;">';
 	echo '<h3 style="cursor: pointer;" onclick="toggleCustomFields()">Spa Soft Info (click to minimize)</h3>';
