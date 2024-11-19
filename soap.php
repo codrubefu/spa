@@ -100,7 +100,6 @@ class soap {
 			$value          = substr( $item, 3 );
 			$result[ $key ] = $value;
 		}
-dump($result);
 		return $result;
 	}
 }

@@ -21,7 +21,6 @@ function include_plugin_files() {
 }
 
 
-
 // Hook for plugin activation
 register_activation_hook( __FILE__, 'create_custom_woocommerce_attribute' );
 
@@ -68,10 +67,9 @@ add_action( 'init', 'add_custom_endpoint' );
 
 // Handle the custom endpoint
 function handle_custom_endpoint() {
-
-	if ( current_user_can( 'manage_options' ) ) {
-		global $wp_query;
-		if ( isset( $wp_query->query_vars['resend_order'] ) ) {
+	global $wp_query;
+	if ( isset( $wp_query->query_vars['resend_order'] ) ) {
+		if ( current_user_can( 'manage_options' ) ) {
 			$order_id       = intval( $wp_query->query_vars['resend_order'] );
 			$finalize_order = new finalize_order();
 			$finalize_order->onOrderCompleted( $order_id );
@@ -82,10 +80,11 @@ function handle_custom_endpoint() {
 				exit;
 			}
 			exit;
+		} else {
+			wp_die( 'You do not have sufficient permissions to access this page.' );
 		}
-	} else {
-		wp_die( 'You do not have sufficient permissions to access this page.' );
 	}
+
 }
 
 add_action( 'template_redirect', 'handle_custom_endpoint' );
@@ -145,42 +144,41 @@ class spa {
 new spa();
 
 
-
-
 class WooCustomTemplateOverrides {
 
 	public function __construct() {
-		add_filter('woocommerce_locate_template', array($this, 'override_woocommerce_template'), 10, 3);
+		add_filter( 'woocommerce_locate_template', array( $this, 'override_woocommerce_template' ), 10, 3 );
 	}
 
 	/**
 	 * Override WooCommerce template files
 	 */
-	public function override_woocommerce_template($template, $template_name, $template_path) {
+	public function override_woocommerce_template( $template, $template_name, $template_path ) {
 		// Define the custom path for your template overrides
-		$custom_path = plugin_dir_path(__FILE__) . 'templates/' . $template_name;
+		$custom_path = plugin_dir_path( __FILE__ ) . 'templates/' . $template_name;
+
 		// If the custom template exists, use it
-		return file_exists($custom_path) ? $custom_path : $template;
+		return file_exists( $custom_path ) ? $custom_path : $template;
 	}
 }
 
 new WooCustomTemplateOverrides();
 
 function enqueue_custom_styles() {
-	wp_enqueue_style('custom-styles', plugin_dir_url(__FILE__) . 'src/style.css');
+	wp_enqueue_style( 'custom-styles', plugin_dir_url( __FILE__ ) . 'src/style.css' );
 }
 
-add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
+add_action( 'wp_enqueue_scripts', 'enqueue_custom_styles' );
 
 function dd() {
-	array_map(function ($x) {
-		dump($x);
-	}, func_get_args());
+	array_map( function ( $x ) {
+		dump( $x );
+	}, func_get_args() );
 	die;
 }
 
-function dump($str) {
+function dump( $str ) {
 	echo '<pre>';
-	print_r($str);
+	print_r( $str );
 	echo '</pre>';
 }
