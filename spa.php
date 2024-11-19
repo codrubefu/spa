@@ -18,6 +18,7 @@ function include_plugin_files() {
 	require_once plugin_dir_path( __FILE__ ) . 'order/customer.php';
 	require_once plugin_dir_path( __FILE__ ) . 'order/partner.php';
 	require_once plugin_dir_path( __FILE__ ) . 'admin/order.php';
+	require_once plugin_dir_path( __FILE__ ) . 'extra_fields.php';
 }
 
 
@@ -142,27 +143,6 @@ class spa {
 }
 
 new spa();
-
-
-class WooCustomTemplateOverrides {
-
-	public function __construct() {
-		add_filter( 'woocommerce_locate_template', array( $this, 'override_woocommerce_template' ), 10, 3 );
-	}
-
-	/**
-	 * Override WooCommerce template files
-	 */
-	public function override_woocommerce_template( $template, $template_name, $template_path ) {
-		// Define the custom path for your template overrides
-		$custom_path = plugin_dir_path( __FILE__ ) . 'templates/' . $template_name;
-
-		// If the custom template exists, use it
-		return file_exists( $custom_path ) ? $custom_path : $template;
-	}
-}
-
-new WooCustomTemplateOverrides();
 
 function enqueue_custom_styles() {
 	wp_enqueue_style( 'custom-styles', plugin_dir_url( __FILE__ ) . 'src/styles.css' );
