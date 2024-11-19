@@ -17,7 +17,10 @@ function include_plugin_files() {
 	require_once plugin_dir_path( __FILE__ ) . 'order/order.php';
 	require_once plugin_dir_path( __FILE__ ) . 'order/customer.php';
 	require_once plugin_dir_path( __FILE__ ) . 'order/partner.php';
+	require_once plugin_dir_path( __FILE__ ) . 'admin/order.php';
 }
+
+
 
 // Hook for plugin activation
 register_activation_hook( __FILE__, 'create_custom_woocommerce_attribute' );
@@ -55,27 +58,37 @@ function create_custom_woocommerce_attribute() {
 }
 
 
-// Add this code to your plugin or theme's functions.php file
-
 // Add custom rewrite rule
 function add_custom_endpoint() {
-	add_rewrite_rule( '^test-order-completed/([0-9]+)/?', 'index.php?test_order_completed=$matches[1]', 'top' );
-	add_rewrite_tag( '%test_order_completed%', '([0-9]+)' );
+	add_rewrite_rule( '^resend_order/([0-9]+)/?', 'index.php?resend_order=$matches[1]', 'top' );
+	add_rewrite_tag( '%resend_order%', '([0-9]+)' );
 }
 
 add_action( 'init', 'add_custom_endpoint' );
 
 // Handle the custom endpoint
 function handle_custom_endpoint() {
-	global $wp_query;
-	if ( isset( $wp_query->query_vars['test_order_completed'] ) ) {
-		$order_id       = intval( $wp_query->query_vars['test_order_completed'] );
-		$finalize_order = new finalize_order();
-		$finalize_order->onOrderCompleted( $order_id );
-		exit;
+
+	if ( current_user_can( 'manage_options' ) ) {
+		global $wp_query;
+		if ( isset( $wp_query->query_vars['resend_order'] ) ) {
+			$order_id       = intval( $wp_query->query_vars['resend_order'] );
+			$finalize_order = new finalize_order();
+			$finalize_order->onOrderCompleted( $order_id );
+			// Capture the referrer URL
+			$referrer = wp_get_referer();
+			if ( $referrer ) {
+				wp_safe_redirect( $referrer );
+				exit;
+			}
+			exit;
+		}
+	} else {
+		wp_die( 'You do not have sufficient permissions to access this page.' );
 	}
 }
 
+add_action( 'template_redirect', 'handle_custom_endpoint' );
 add_action( 'template_redirect', 'handle_custom_endpoint' );
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -159,3 +172,15 @@ function enqueue_custom_styles() {
 
 add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
 
+function dd() {
+	array_map(function ($x) {
+		dump($x);
+	}, func_get_args());
+	die;
+}
+
+function dump($str) {
+	echo '<pre>';
+	print_r($str);
+	echo '</pre>';
+}

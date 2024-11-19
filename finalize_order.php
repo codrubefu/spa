@@ -12,9 +12,9 @@ class finalize_order {
 
 	public function __construct() {
 
-		$this->order = new order();
+		$this->order    = new order();
 		$this->customer = new customer();
-		$this->partner = new partner();
+		$this->partner  = new partner();
 		// Hook into the order status completed action
 		add_action( 'woocommerce_order_status_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
 	}
@@ -24,12 +24,16 @@ class finalize_order {
 		// Ensure the order exists and is paid
 		$order = wc_get_order( $order_id );
 
-		//$this->order->sendOrderToSoap($order);
-		$this->customer->sendCustomerToSoap($order);
-	//	$this->partner->sendPartnerToSoap($order);
+
+		$customerId = $this->customer->sendCustomerToSoap( $order );
+		if($customerId){
+			$this->order->sendOrderToSoap( $order, $customerId );
+		}
+
+		//	$this->partner->sendPartnerToSoap($order);
 
 
-		if ( $order && $order->is_paid() ) {
+		if ( $order ) {
 			// Your custom code here
 			error_log( 'Order ' . $order_id . ' has been completed and paid.' );
 
@@ -37,7 +41,6 @@ class finalize_order {
 			// $this->send_custom_notification( $order );
 		}
 	}
-
 
 
 }

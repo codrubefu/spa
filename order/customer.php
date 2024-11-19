@@ -42,10 +42,25 @@ class customer {
 	}
 
 
-	public function sendCustomerToSoap($order): void {
+	public function sendCustomerToSoap($order):string  {
 		$info = $this->getOrderInfo($order);
 
-		$this->soap->send_curl_request( $this->action, $this->soapRequestForCustomerRegistration( $info ) );
+		$result = $this->soap->send_curl_request( $this->action, $this->soapRequestForCustomerRegistration( $info ) );
+
+		return $this->updateTheCustomer($order,$result);
+	}
+
+	protected function updateTheCustomer($order,$result) :string {
+		if($result['ERR']=='KO') {
+			update_post_meta($order->get_id(), '_custom_field_user_info_success', false);
+
+			update_post_meta($order->get_id(), '_custom_field_user_info', json_encode($result));
+			return false;
+		}
+		update_post_meta($order->get_id(), '_custom_field_user_info', json_encode($result));
+		update_post_meta($order->get_id(), '_custom_field_user_info_success', true);
+
+		return $result['MID'];
 	}
 
 	private function soapRequestForCustomerRegistration( $info ): string {
@@ -69,3 +84,4 @@ class customer {
     XML;
 	}
 }
+
