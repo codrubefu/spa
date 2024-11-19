@@ -74,7 +74,7 @@ function redirect_to_custom_checkout() {
 	}
 }
 
-//add_action( 'template_redirect', 'redirect_to_custom_checkout' );
+add_action( 'template_redirect', 'redirect_to_custom_checkout' );
 
 
 class WooCustomTemplateOverrides {
