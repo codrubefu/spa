@@ -64,7 +64,7 @@ function display_custom_user_fields_in_admin_order( $order ) {
 	if ( $cui ) {
 		echo '<p><strong>' . __( 'CUI' ) . ':</strong> ' . $cui . '</p>';
 	}
-}
+} 
 
 
 function redirect_to_custom_checkout() {
