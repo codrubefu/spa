@@ -68,8 +68,8 @@ function display_custom_user_fields_in_admin_order( $order ) {
 
 
 function redirect_to_custom_checkout() {
-	dd(is_wc_endpoint_url());
-	if ( is_checkout() && !is_wc_endpoint_url() ) {
+
+	if ( is_checkout() && !is_wc_endpoint_url() &&  $_SERVER['REQUEST_URI'] == '/checkout/' ) {
 		wp_redirect( home_url( '/spa-checkout' ) ); // Replace with your custom page URL
 		exit;
 	}
