@@ -7,7 +7,8 @@ include_plugin_files();
 
 class soap {
 
-	private $import_endpoint_url = 'http://95.77.98.62:8000/GettingStarted/CalculatorService'; // Endpoint pentru import
+	private $import_endpoint_parameters = '/GettingStarted/CalculatorService'; // Endpoint pentru import
+	private $import_endpoint_url = '/GettingStarted/CalculatorService'; // Endpoint pentru import
 
 	private string $SOH; // Start of Header
 	private string $STX; // Start of Text
@@ -19,6 +20,7 @@ class soap {
 		$this->STX = chr( 0x02 ); // Start of Text
 		$this->ETX = chr( 0x03 ); // End of Text
 		$this->EOT = chr( 0x04 ); // End of Transmission
+		$this->import_endpoint_url = get_option('master_spa_server_address', '').$this->import_endpoint_parameters;
 	}
 
 	public function startOfLine(): string {
@@ -72,6 +74,7 @@ class soap {
 
 		// Check for errors
 		if ( $response === false || $http_code !== 200 ) {
+
 			return [
 				'ERR' => 'KO',
 				'HTTP_CODE' => $http_code

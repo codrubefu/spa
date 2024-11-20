@@ -19,6 +19,7 @@ function include_plugin_files() {
 	require_once plugin_dir_path( __FILE__ ) . 'order/partner.php';
 	require_once plugin_dir_path( __FILE__ ) . 'admin/order.php';
 	require_once plugin_dir_path( __FILE__ ) . 'extra_fields.php';
+	require_once plugin_dir_path( __FILE__ ) . 'settings.php';
 }
 
 
