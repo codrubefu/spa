@@ -4,9 +4,9 @@ add_action( 'woocommerce_admin_order_data_after_billing_address', 'display_custo
 
 function display_custom_fields_in_admin_order( $order ) {
 	$custom_field_user_info          = get_post_meta( $order->get_id(), '_custom_field_user_info', true );
+	$custom_partner_order_info         = get_post_meta( $order->get_id(), '_custom_field_order_info', true );
 	$custom_field_order_info         = get_post_meta( $order->get_id(), '_custom_field_order_info', true );
 	$custom_field_user_info_success  = get_post_meta( $order->get_id(), '_custom_field_user_info_success', true );
-	$custom_field_user_order_success = get_post_meta( $order->get_id(), '_custom_field_user_order_success', true );
 
 	if ( $custom_field_user_info_success && $custom_field_user_info_success ) {
 		echo '<p style="color:green;font-size:15px"><strong>Spa Soft Info:</strong> Successfully sent to Spa Soft</p>';
@@ -15,11 +15,12 @@ function display_custom_fields_in_admin_order( $order ) {
 		echo '<a href="' . home_url( '/?resend_order=' . $order->get_id() ) . '" >Retrimite orderul catre server</a>';	}
 
 	echo '<div id="custom-fields-section" style="margin-top: 20px;">';
-	echo '<h3 style="cursor: pointer;" onclick="toggleCustomFields()">Spa Soft Info (click to minimize)</h3>';
+	echo '<h3 style="cursor: pointer;" onclick="toggleCustomFields()">Spa Soft Info (apa aici pentru detalii)</h3>';
 	echo '<div id="custom-fields-content" style="display: none;">';
 
 	customFieldToTable( $custom_field_user_info, 'User Info' );
 	customFieldToTable( $custom_field_order_info, 'Order Info' );
+	customFieldToTable( $custom_partner_order_info, 'Partner Info' );
 
 	echo '</div>';
 	echo '</div>';

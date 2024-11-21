@@ -35,17 +35,20 @@ class finalize_order {
 
 		$custom_field_user_info_success  = get_post_meta( $order->get_id(), '_custom_field_user_info_success', true );
 		$custom_field_user_order_success = get_post_meta( $order->get_id(), '_custom_field_user_order_success', true );
+		$custom_field_partner_order_success = get_post_meta( $order->get_id(), '_custom_field_partner_order_success', true );
 
-		if($custom_field_user_order_success && $custom_field_user_info_success){
+		if($custom_field_user_order_success && $custom_field_user_info_success && $custom_field_partner_order_success){
 			return;
 		}
-
 		$customerId = $this->customer->sendCustomerToSoap( $order );
+		if(trim($order->get_billing_company()) === ''){
+			$partnerId = $this->partner->sendPartnerToSoap($order,$customerId);
+		}
+
 		if($customerId){
 			$this->order->sendOrderToSoap( $order, $customerId );
 		}
 
-		//	$this->partner->sendPartnerToSoap($order);
 
 
 		if ( $order ) {

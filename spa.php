@@ -1,9 +1,10 @@
 <?php
 /*
-Plugin Name: Spa Plugin
+Plugin Name: Master Spa Plugin
 Description: Importă produse prin cURL și trimite o notificare la achiziție prin cURL în WooCommerce.
 Version: 1.0
 Author: Codrut
+Author URI: https://befu.ro
 */
 
 
