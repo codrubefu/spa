@@ -45,7 +45,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
                                     </label>
                                 </span>
                             </p>
-                            <div id="custom_checkout_fields">
+                            <div id="custom_checkout_fields" style="display: none">
 								<?php woocommerce_form_field( 'billing_company', $fields['billing_company'], $checkout->get_value( 'billing_company' ) ); ?>
 								<?php echo do_shortcode( '[custom_checkout_fields]' ); ?>
                             </div>
