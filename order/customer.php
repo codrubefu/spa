@@ -1,5 +1,7 @@
 <?php
 
+use helper\soap;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
@@ -35,7 +37,7 @@ class customer {
 		$clientInfo['TYP'] = 'Website'; // Type of Client, VarChar(50): Default is "Website"
 		$clientInfo['DTB'] = '1983-10-28'; // Date of Birth, VarChar(10): Format YYYY-MM-DD
 		$clientInfo['CLH'] = '0'; // Client Group Account, Numeric(9): 0 for website client type, or parent’s MasterSPA Client ID for children
-		$clientInfo['COD'] = ''; // QRCode, VarChar(20): RFIDCardID, QRCode, or BarCode for client identification at reception
+		$clientInfo['COD'] =  $order->get_customer_id(); // QRCode, VarChar(20): RFIDCardID, QRCode, or BarCode for client identification at reception
 
 		return $this->soap->arrayToSoapText($clientInfo);
 

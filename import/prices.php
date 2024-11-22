@@ -1,4 +1,8 @@
 <?php
+
+namespace import;
+use helper\soap;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
@@ -18,6 +22,7 @@ class prices {
 		$soap_request = $this->soap_request_for_prices( $name );
 
 		$prices = $this->soap->send_curl_request( $this->import_endpoint_url, $soap_request );
+
 		return $this->parse_prices( $prices );
 	}
 
@@ -46,9 +51,9 @@ class prices {
 			}
 		}
 
-		foreach ($priceInfo as $key=>$value){
-			if(!isset($priceInfo[$key]['INF'])){
-				$priceInfo[$key]['INF'] = 'Pret de baza';
+		foreach ( $priceInfo as $key => $value ) {
+			if ( ! isset( $priceInfo[ $key ]['INF'] ) ) {
+				$priceInfo[ $key ]['INF'] = 'Pret de baza';
 			}
 		}
 

@@ -1,5 +1,7 @@
 <?php
 
+use helper\soap;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly

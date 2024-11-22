@@ -1,4 +1,8 @@
 <?php
+
+namespace import;
+use helper\Soap;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
@@ -15,12 +19,13 @@ class services {
 
 	public function loadServices(): array {
 		$soap_request = $this->soap_request_for_services();
-		$services = $this->soap->send_curl_request( $this->import_endpoint_url, $soap_request );
-		return $this->parse_services($services);
+		$services     = $this->soap->send_curl_request( $this->import_endpoint_url, $soap_request );
+
+		return $this->parse_services( $services );
 	}
 
 	private function parse_services( $services ): array {
-		if ($services === null) {
+		if ( $services === null ) {
 			return [];
 		}
 		$services = str_replace( '&#xD;', '&space&', $services );
@@ -45,9 +50,9 @@ class services {
 	}
 
 	private function soap_request_for_services() {
-		$url                      = $this->soap->getImportEndPoint();
-		$data                     = date( 'Y-m-d' );
-		$time                     = date( 'H:i:s' );
+		$url  = $this->soap->getImportEndPoint();
+		$data = date( 'Y-m-d' );
+		$time = date( 'H:i:s' );
 
 		return <<<XML
     <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"

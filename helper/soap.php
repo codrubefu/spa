@@ -1,4 +1,6 @@
 <?php
+
+namespace helper;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
@@ -16,11 +18,11 @@ class soap {
 	private string $EOT; // End of Transmission
 
 	public function __construct() {
-		$this->SOH = chr( 0x01 ); // Start of Header
-		$this->STX = chr( 0x02 ); // Start of Text
-		$this->ETX = chr( 0x03 ); // End of Text
-		$this->EOT = chr( 0x04 ); // End of Transmission
-		$this->import_endpoint_url = get_option('master_spa_server_address', '').$this->import_endpoint_parameters;
+		$this->SOH                 = chr( 0x01 ); // Start of Header
+		$this->STX                 = chr( 0x02 ); // Start of Text
+		$this->ETX                 = chr( 0x03 ); // End of Text
+		$this->EOT                 = chr( 0x04 ); // End of Transmission
+		$this->import_endpoint_url = get_option( 'master_spa_server_address', '' ) . $this->import_endpoint_parameters;
 	}
 
 	public function startOfLine(): string {
@@ -76,7 +78,7 @@ class soap {
 		if ( $response === false || $http_code !== 200 ) {
 
 			return [
-				'ERR' => 'KO',
+				'ERR'       => 'KO',
 				'HTTP_CODE' => $http_code
 			];
 
@@ -103,6 +105,7 @@ class soap {
 			$value          = substr( $item, 3 );
 			$result[ $key ] = $value;
 		}
+
 		return $result;
 	}
 }

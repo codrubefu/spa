@@ -8,26 +8,35 @@ Author URI: https://befu.ro
 */
 
 
-function include_plugin_files() {
-	require_once plugin_dir_path( __FILE__ ) . 'soap.php';
-	require_once plugin_dir_path( __FILE__ ) . 'services.php';
-	require_once plugin_dir_path( __FILE__ ) . 'products.php';
-	require_once plugin_dir_path( __FILE__ ) . 'prices.php';
+use import\products;
+
+function include_plugin_files(): void {
+	require_once plugin_dir_path( __FILE__ ) . 'helper/soap.php';
+
+	require_once plugin_dir_path( __FILE__ ) . 'admin/extra_fields.php';
+	require_once plugin_dir_path( __FILE__ ) . 'admin/order.php';
+	require_once plugin_dir_path( __FILE__ ) . 'admin/custom_fields.php';
+
+	require_once plugin_dir_path( __FILE__ ) . 'settings.php';
 	require_once plugin_dir_path( __FILE__ ) . 'finalize_order.php';
-	require_once plugin_dir_path( __FILE__ ) . 'custom_fields.php';
+
+	require_once plugin_dir_path( __FILE__ ) . 'import/services.php';
+	require_once plugin_dir_path( __FILE__ ) . 'import/products.php';
+	require_once plugin_dir_path( __FILE__ ) . 'import/prices.php';
+
+
 	require_once plugin_dir_path( __FILE__ ) . 'order/order.php';
 	require_once plugin_dir_path( __FILE__ ) . 'order/customer.php';
 	require_once plugin_dir_path( __FILE__ ) . 'order/partner.php';
-	require_once plugin_dir_path( __FILE__ ) . 'admin/order.php';
-	require_once plugin_dir_path( __FILE__ ) . 'extra_fields.php';
-	require_once plugin_dir_path( __FILE__ ) . 'settings.php';
+
+
 }
 
 
 // Hook for plugin activation
 register_activation_hook( __FILE__, 'create_custom_woocommerce_attribute' );
 
-function create_custom_woocommerce_attribute() {
+function create_custom_woocommerce_attribute(): void {
 	global $wpdb;
 
 	// Define attribute name and slug
@@ -61,7 +70,7 @@ function create_custom_woocommerce_attribute() {
 
 
 // Add custom rewrite rule
-function add_custom_endpoint() {
+function add_custom_endpoint(): void {
 	add_rewrite_rule( '^resend_order/([0-9]+)/?', 'index.php?resend_order=$matches[1]', 'top' );
 	add_rewrite_tag( '%resend_order%', '([0-9]+)' );
 }
@@ -69,7 +78,7 @@ function add_custom_endpoint() {
 add_action( 'init', 'add_custom_endpoint' );
 
 // Handle the custom endpoint
-function handle_custom_endpoint() {
+function handle_custom_endpoint(): void {
 	global $wp_query;
 	if ( isset( $wp_query->query_vars['resend_order'] ) ) {
 		if ( current_user_can( 'manage_options' ) ) {
@@ -91,11 +100,10 @@ function handle_custom_endpoint() {
 }
 
 add_action( 'template_redirect', 'handle_custom_endpoint' );
-add_action( 'template_redirect', 'handle_custom_endpoint' );
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} // Protecție acces direct
+}
 error_reporting( E_ALL );
 
 class spa {
