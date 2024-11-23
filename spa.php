@@ -28,6 +28,7 @@ function include_plugin_files(): void {
 	require_once plugin_dir_path( __FILE__ ) . 'order/order.php';
 	require_once plugin_dir_path( __FILE__ ) . 'order/customer.php';
 	require_once plugin_dir_path( __FILE__ ) . 'order/partner.php';
+	require_once plugin_dir_path( __FILE__ ) . 'frontend/updateItems.php';
 
 
 }

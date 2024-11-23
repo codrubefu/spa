@@ -14,7 +14,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 }
 
 ?>
-<form name="checkout" method="post" class="checkout woocommerce-checkout"
+<form name="checkout" id="checkout-form" method="post" class="checkout woocommerce-checkout"
       action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data">
 	<?php if ( $checkout->get_checkout_fields() ) : ?>
 
@@ -53,6 +53,9 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 						}
 					}
 					?>
+                    <div>
+                       <a  class="button alt wp-element-button"  id="update-billing-button">Confirma datele de facturare</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,16 +65,28 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 	<?php endif; ?>
 
 	<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
+    <?php
+    $cart =WC()->cart->get_cart();
+    $showCart = 'none';
+    foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+        if($cart_item['first_name']){
+	        $showCart = 'block';
+            break;
+        }
+    }
+    ?>
+    <div style="display: <?php echo $showCart?>" >
+        <h3 id="order_review_heading"><?php esc_html_e( 'Your order', 'woocommerce' ); ?></h3>
 
-    <h3 id="order_review_heading"><?php esc_html_e( 'Your order', 'woocommerce' ); ?></h3>
+        <?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
 
-	<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
+        <div id="order_review" class="woocommerce-checkout-review-order" >
+            <?php do_action( 'woocommerce_checkout_order_review' ); ?>
+        </div>
 
-    <div id="order_review" class="woocommerce-checkout-review-order">
-		<?php do_action( 'woocommerce_checkout_order_review' ); ?>
+        <?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
+
     </div>
-
-	<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
 
 </form>
 

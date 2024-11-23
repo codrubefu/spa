@@ -127,6 +127,14 @@ class CustomCheckoutFields {
                     }
                 });
             });
+            
+            jQuery(function($) {
+			    // Listen for the button click
+			    $('#confirm-billing').on('click', function(e) {
+			        e.preventDefault(); // Prevent default button behavior if it's a form button
+			        $('body').trigger('update_checkout');
+			    });
+			});
         ";
 		wp_add_inline_script( 'jquery', $custom_js );
 	}
