@@ -11,6 +11,7 @@ Author URI: https://befu.ro
 use import\products;
 
 function include_plugin_files(): void {
+	require_once plugin_dir_path( __FILE__ ) . 'bomba.php';
 	require_once plugin_dir_path( __FILE__ ) . 'helper/soap.php';
 
 	require_once plugin_dir_path( __FILE__ ) . 'admin/extra_fields.php';
@@ -110,10 +111,13 @@ error_reporting( E_ALL );
 class spa {
 
 	private products $products;
+	private bomba $bomba;
 
 	public function __construct() {
 		include_plugin_files();
 		$this->products = new products();
+		$this->bomba = new bomba();
+		
 		// Hook pentru importul periodic de produse
 		add_action( 'init', [ $this, 'schedule_import' ] );
 		add_action( 'woocommerce_curl_import_event', [ $this, 'import_products' ] );
@@ -125,6 +129,7 @@ class spa {
 
 		// Adaugă un endpoint personalizat pentru a rula importul manual
 		add_action( 'admin_init', [ $this, 'manual_import_endpoint' ] );
+		add_action( 'init', [ $this, 'manual_bomba' ] );
 	}
 
 	public function manual_import_endpoint() {
@@ -133,6 +138,15 @@ class spa {
 
 			$this->products->import_products();
 			wp_die( 'Importul de produse a fost executat cu succes.' );
+		}
+	}
+
+	public function manual_bomba() {
+		// Verifică dacă acțiunea personalizată a fost solicitată și dacă utilizatorul are permisiunile necesare
+		if ( isset( $_GET['action'] ) && $_GET['action'] === 'client') {
+
+			$this->bomba->run();
+			wp_die( 'Gata.' );
 		}
 	}
 
