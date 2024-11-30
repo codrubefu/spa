@@ -156,7 +156,7 @@ class products {
 
 	private function add_translation( $roText, $engText ) {
 
-		if ( ! trim( $engText ) ) {
+		if ( !trim( $engText ) ) {
 			return;
 		}
 
@@ -166,6 +166,11 @@ class products {
 		// Check if TranslatePress table and translation function exist
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'trp_dictionary_ro_ro_en_us';
+
+		if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") !== $table_name) {
+			return;
+		}
+
 		$ro         = preg_split( '/\r\n|\r|\n/', $roText );
 		$ro         = array_filter( $ro ); // Remove empty elements
 		$ro         = array_values( $ro ); // Reindex the array
