@@ -21,15 +21,20 @@ class prices {
 
 		$soap_request = $this->soap_request_for_prices( $name );
 
-		$prices = $this->soap->send_curl_request( $this->import_endpoint_url, $soap_request );
+		$prices = $this->soap->send_curl_request( $this->import_endpoint_url, $soap_request,false );
 
 		return $this->parse_prices( $prices );
 	}
 
 	private function parse_prices( $prices ): array {
-		if ( $prices === null ) {
+		if ( $prices === null) {
 			return [];
 		}
+
+		if(isset($prices['ERR'])){
+			return [];
+		}
+
 		preg_match( '/\&\#x2;(.*)\&\#x3;/s', $prices, $matches );
 		$services       = $matches[1];
 		$services2array = explode( '|', $services );

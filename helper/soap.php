@@ -47,7 +47,7 @@ class soap {
 		return $soap_text;
 	}
 
-	public function send_curl_request( $action, $soap_request ): bool|string|null|array {
+	public function send_curl_request( $action, $soap_request, $parse = true ): bool|string|null|array {
 		$url = $this->import_endpoint_url;
 		// Initialize cURL test
 		$ch = curl_init( $url );
@@ -79,11 +79,17 @@ class soap {
 
 			return [
 				'ERR'       => 'KO',
-				'HTTP_CODE' => $http_code
+				'HTTP_CODE' => $http_code,
+				'HTTP_REQUEST' => $soap_request
 			];
 
 		} else {
-			return $this->parseResponse( $response );
+			if($parse){
+				return $this->parseResponse($response);
+			}else{
+				return $response;
+			}
+
 		}
 
 		// Close the cURL session
