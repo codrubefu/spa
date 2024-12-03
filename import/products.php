@@ -57,6 +57,11 @@ class products {
 
 
 	protected function import_product( $product_data ) {
+
+		if(!$product_data['ART']){
+			return;
+		}
+
 		$sku                 = $product_data['AID'];
 		$existing_product_id = wc_get_product_id_by_sku( $sku );
 		// Load prices to determine if we need a variable or simple product
