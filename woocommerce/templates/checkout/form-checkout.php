@@ -69,7 +69,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     $cart =WC()->cart->get_cart();
     $showCart = 'none';
     foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-        if($cart_item['first_name']){
+        if(isset($cart_item['first_name'])){
 	        $showCart = 'block';
             break;
         }
