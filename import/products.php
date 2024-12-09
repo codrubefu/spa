@@ -58,7 +58,7 @@ class products {
 
 	protected function import_product( $product_data ) {
 
-		if(!$product_data['ART']){
+		if(!$product_data['ART'] || $product_data['ART'] == ''){
 			return;
 		}
 
@@ -68,9 +68,7 @@ class products {
 		$price_variations = $this->prices->loadPrices( $product_data['ART'] );
 
 		$is_variable_product = count( $price_variations ) > 2;
-		if ( $is_variable_product < 2 ) {
-			return;
-		}
+
 		if ( $existing_product_id ) {
 			$product = $is_variable_product ? new WC_Product_Variable( $existing_product_id ) : new WC_Product( $existing_product_id );
 		} else {
@@ -85,8 +83,8 @@ class products {
 			$product->set_regular_price( $product_data['PRC'] );
 			$product->set_stock_quantity( 100000 );
 			$product->set_manage_stock( true );
-
 		}
+
 		$product->set_shipping_class_id( 1 );
 		$product->save();
 		$product_id       = $product->get_id();
