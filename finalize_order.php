@@ -19,7 +19,7 @@ class finalize_order {
 		add_action( 'woocommerce_order_status_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
 	}
 
-	// Define the function that will run when an order is completed
+	// Define the function that will run when an order is completed and paid
 	public function onOrderCompleted( $order_id ): void {
 		// Ensure the order exists and is paid
 		// Get latest 3 orders.
