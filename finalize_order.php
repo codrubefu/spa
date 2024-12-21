@@ -19,7 +19,7 @@ class finalize_order {
 		add_action( 'woocommerce_order_status_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
 	}
 
-	// Define the function that will run when an order is completed and paid
+	// Define the function that will run when an order is completed
 	public function onOrderCompleted( $order_id ): void {
 		// Ensure the order exists and is paid
 		// Get latest 3 orders.
@@ -41,8 +41,8 @@ class finalize_order {
 			return;
 		}
 		$customerId = $this->customer->sendCustomerToSoap( $order );
-		if(trim($order->get_billing_company()) === ''){
-			$partnerId = $this->partner->sendPartnerToSoap($order,$customerId);
+		if(trim($order->get_billing_company()) !== ''){
+			$this->partner->sendPartnerToSoap($order,$customerId);
 		}
 
 		if($customerId){
