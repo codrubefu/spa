@@ -67,7 +67,7 @@ class products {
 		// Load prices to determine if we need a variable or simple product
 		$price_variations = $this->prices->loadPrices( $product_data['ART'] );
 
-		$is_variable_product = count( $price_variations ) > 2;
+		$is_variable_product = count( $price_variations ) > 1;
 
 		if ( $existing_product_id ) {
 			$product = $is_variable_product ? new WC_Product_Variable( $existing_product_id ) : new WC_Product( $existing_product_id );
