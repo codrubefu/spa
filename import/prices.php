@@ -57,8 +57,11 @@ class prices {
 		}
 
 		foreach ( $priceInfo as $key => $value ) {
-			if ( ! isset( $priceInfo[ $key ]['INF'] ) ) {
-				$priceInfo[ $key ]['INF'] = 'Pret de baza';
+			if ( ! isset( $priceInfo[ $key ]['INF']) && $key == 0 ) {
+				$priceInfo[ $key ]['INF'] = 'Pret de lista';
+			}
+			if ( ! isset( $priceInfo[ $key ]['INF']) && $key != 0 ) {
+				$priceInfo[ $key ]['INF'] = 'Pret promotional';
 			}
 		}
 
