@@ -45,7 +45,6 @@ class customer {
 		$clientInfo['COD'] = $customerId; // QRCode, VarChar(20): RFIDCardID, QRCode, or BarCode for client identification at reception
 
 		return $this->soap->arrayToSoapText( $clientInfo );
-
 	}
 
 

@@ -25,13 +25,10 @@ class order {
 
 			if ( count( $nameInfo ) == 2 ) {
 				$itemInfo['name']  = $nameInfo[0];
-				$itemInfo['types'] = $nameInfo[1];
 			} else {
 				$itemInfo['name']  = $item->get_name();
-				$itemInfo['types'] = '';
 			}
-
-
+			$itemInfo['types'] = 'Card Membru';
 			$items['names'][ $key ] = $itemInfo['name'];
 			$items['type'][ $key ]  = $itemInfo['types'];
 
@@ -64,7 +61,6 @@ class order {
 		$soapCartInfo['REN'] = 0; // Renewal Flag, Char(1): "0"=not renewal, "1"=is renewal
 		$soapCartInfo['TYP'] = implode( '#', $items['type'] );; // List of Type of Sale, VarChar(30): Types of sales separated by '#'
 		$soapCartInfo['PTN'] = '0'; // Partner ID, Numeric(9): Company ID for issuing the fiscal invoice
-
 		return $this->soap->arrayToSoapText( $soapCartInfo );
 	}
 

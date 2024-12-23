@@ -62,6 +62,9 @@ class prices {
 			}
 			if ( ! isset( $priceInfo[ $key ]['INF']) && $key != 0 ) {
 				$priceInfo[ $key ]['INF'] = 'Pret promotional';
+				if($key > 1){
+					$priceInfo[ $key ]['INF'] = 'Pret promotional '.$key;
+				}
 			}
 		}
 
