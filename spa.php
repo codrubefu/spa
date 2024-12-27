@@ -9,6 +9,7 @@ Author URI: https://befu.ro
 
 
 use import\products;
+session_start(); // Start the session
 
 function include_plugin_files(): void {
 	require_once plugin_dir_path( __FILE__ ) . 'bomba.php';

@@ -30,13 +30,13 @@ class customer {
 		$clientInfo['CID'] = $customerId; // Client Website ID, Numeric(9): Client Website ID (Website DB)
 		$clientInfo['MID'] = ''; // MasterSPA ID, Numeric(9): Empty in request (RQ), filled with MasterSPA Client ID in response (RS)
 		$clientInfo['CFN'] = $order->get_billing_first_name(); // First Name, VarChar(60): Client's first name
-		$clientInfo['CLN'] = $order->get_billing_first_name(); // Last Name, VarChar(60): Client's last name
+		$clientInfo['CLN'] = $order->get_billing_last_name(); // Last Name, VarChar(60): Client's last name
 		$clientInfo['CMB'] = $order->get_billing_phone(); // Mobile, VarChar(20): Client's mobile phone
 		$clientInfo['CEM'] = $order->get_billing_email(); // Email, VarChar(50): Client's email
 		$clientInfo['CLM'] = '0'; // Member, Char(1): "0"=not member, "1"=is member
 		$clientInfo['CSX'] = 'M'; // Sex, Char(1): "M"=Male, "F"=Female
 		$clientInfo['CCT'] = $order->get_billing_city(); // City, VarChar(60): Client's city, default is "Doha"
-		$clientInfo['CCN'] = WC()->countries->countries[$order->get_billing_country()]; // Country, VarChar(60): Client's country, default is "Qatar"
+		$clientInfo['CCN'] = 'Romania'; // Country, VarChar(60): Client's country, default is "Qatar"
 		$clientInfo['DAT'] = date( 'Y-m-d' ); // Date of transmission, VarChar(10): Format YYYY-MM-DD
 		$clientInfo['TIM'] = date( 'H:i:s' ); // Time of transmission, VarChar(8): Format HH:MM:SS
 		$clientInfo['TYP'] = 'Website'; // Type of Client, VarChar(50): Default is "Website"

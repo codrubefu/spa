@@ -77,6 +77,21 @@ function update_checkout_handler(): void {
 		WC()->customer->save();
 
 		$cart = WC()->cart->get_cart();
+		$custom_checkout_fields = [
+			'type' => [ 'label' => __( 'type' ), 'placeholder' => __( 'type' ) ],
+			'billing_cui' => [ 'label' => __( 'Cui' ), 'placeholder' => __( 'CUI' ) ],
+			'reg_com' => [ 'label' => __( 'Reg.Com.' ), 'placeholder' => __( 'Registrul Comertului' ) ],
+			'bank' => [ 'label' => __( 'Banca' ), 'placeholder' => __( 'Banca' ) ],
+			'iban' => [ 'label' => __( 'Cont IBAN' ), 'placeholder' => __( 'Cont IBAN' ) ],
+		];
+		foreach ( $custom_checkout_fields as $key => $field ) {
+			parse_str($_POST['form_data'], $output_array);
+
+			if ( ! empty( $output_array[ $key ] ) ) {
+				$_SESSION[ $key ] = sanitize_text_field( $output_array[ $key ] );
+			}
+		}
+		$customer->set_props( $props );
 
 		foreach ( $cart as $cart_item_key => $cart_item ) {
 			$x    = 0;

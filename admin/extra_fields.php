@@ -38,9 +38,7 @@ class CustomCheckoutFields {
 				'label'       => __( $field['label'] ),
 				'placeholder' => __( $field['placeholder'] ),
 				'required'    => false,
-			), $checkout->get_value( $key ) );
-
-
+			), $_SESSION[ $key ] );
 		}
 	}
 
@@ -51,8 +49,6 @@ class CustomCheckoutFields {
 				update_post_meta( $order_id, $key , sanitize_text_field( $_POST[ $key ] ) );
 			}
 		}
-
-
 	}
 
 // Display custom fields in the admin order details

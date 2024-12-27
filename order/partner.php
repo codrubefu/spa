@@ -48,7 +48,6 @@ class partner {
 		$partnerInfo['DAT'] = date( 'Y-m-d' ); // Date of transmission, VarChar(10): Format YYYY-MM-DD
 		$partnerInfo['TIM'] = date( 'H:i:s' ); // Time of transmission, VarChar(8): Format HH:MM:SS
 
-
 		return $this->soap->arrayToSoapText( $partnerInfo );
 
 	}
@@ -72,8 +71,7 @@ class partner {
 		}
 		update_post_meta($order->get_id(), '_custom_field_user_info', json_encode($result));
 		update_post_meta($order->get_id(), '_custom_field_user_info_success', true);
-
-		return $result['MID'];
+		return $result['PTN'];
 	}
 
 

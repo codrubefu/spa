@@ -41,12 +41,13 @@ class finalize_order {
 			return;
 		}
 		$customerId = $this->customer->sendCustomerToSoap( $order );
+		$partnerId = 0;
 		if(trim($order->get_billing_company()) !== ''){
-			$this->partner->sendPartnerToSoap($order,$customerId);
+			$partnerId = $this->partner->sendPartnerToSoap($order,$customerId);
 		}
 
 		if($customerId){
-			$this->order->sendOrderToSoap( $order, $customerId );
+			$this->order->sendOrderToSoap( $order, $customerId,$partnerId );
 		}
 
 
