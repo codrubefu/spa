@@ -36,7 +36,7 @@ class customer {
 		$clientInfo['CLM'] = '0'; // Member, Char(1): "0"=not member, "1"=is member
 		$clientInfo['CSX'] = 'M'; // Sex, Char(1): "M"=Male, "F"=Female
 		$clientInfo['CCT'] = $order->get_billing_city(); // City, VarChar(60): Client's city, default is "Doha"
-		$clientInfo['CCN'] = $order->get_billing_country(); // Country, VarChar(60): Client's country, default is "Qatar"
+		$clientInfo['CCN'] = WC()->countries->countries[$order->get_billing_country()]; // Country, VarChar(60): Client's country, default is "Qatar"
 		$clientInfo['DAT'] = date( 'Y-m-d' ); // Date of transmission, VarChar(10): Format YYYY-MM-DD
 		$clientInfo['TIM'] = date( 'H:i:s' ); // Time of transmission, VarChar(8): Format HH:MM:SS
 		$clientInfo['TYP'] = 'Website'; // Type of Client, VarChar(50): Default is "Website"

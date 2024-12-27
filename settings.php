@@ -66,6 +66,14 @@ function master_spa_register_settings() {
 		'master-spa-options',                      // Page
 		'master_spa_main_section'                  // Section
 	);
+
+	// Add new section for "Ruleaza importul"
+	add_settings_section(
+		'master_spa_import_section',             // Section ID
+		__('Ruleaza importul', 'master-spa'),    // Title
+		'master_spa_import_section_callback',    // Callback
+		'master-spa-options'                     // Page
+	);
 }
 
 // Callback for the section
@@ -83,4 +91,9 @@ function master_spa_server_address_callback() {
 function master_spa_email_for_reports_callback() {
 	$value = get_option('master_spa_email_for_reports', '');
 	echo '<input type="email" id="master_spa_email_for_reports" name="master_spa_email_for_reports" value="' . esc_attr($value) . '" class="regular-text" />';
+}
+
+// Callback for the new "Ruleaza importul" section
+function master_spa_import_section_callback() {
+	echo '<p><a target="_blank" href="/wp-admin/?action=run_import_products" >Ruleaza importul</a></p>';
 }
