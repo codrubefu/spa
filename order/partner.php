@@ -36,14 +36,14 @@ class partner {
 
 		$partnerInfo['PWB'] = $order->get_customer_id(); // Partner Website ID, Numeric(9): Partner Website ID from the Website DB
 		$partnerInfo['PTN'] = ''; // MasterSPA Partner ID, Numeric(9): Empty in request (RQ), filled with MasterSPA Partner ID in response (RS)
-		$partnerInfo['PNM'] = $order->get_billing_first_name() .' '.$order->get_billing_last_name() ; // Partner Name, VarChar(60): Name of the partner
-		$partnerInfo['PCI'] = $clientInfo['cui']; // VAT Identifier, VarChar(30): Partner Fiscal Identifier (CUI)
+		$partnerInfo['PNM'] = $order->get_billing_company() ; // Partner Name, VarChar(60): Name of the partner
+		$partnerInfo['PCI'] = $clientInfo['billing_cui']; // VAT Identifier, VarChar(30): Partner Fiscal Identifier (CUI)
 		$partnerInfo['PRC'] = $clientInfo['reg_com'];// Registry of Commerce Identifier, VarChar(30): Registry of Commerce Identifier (NrRegCom)
 		$partnerInfo['PBK'] =  $clientInfo['bank']; // Bank Name, VarChar(60): Name of the partner's bank
 		$partnerInfo['PBA'] = $clientInfo['iban'];; // Bank Account, VarChar(60): Partner's bank account
 		$partnerInfo['PAD'] = $order->get_billing_address_1(); // Partner Address, VarChar(60): Partner's address (Street, no.)
 		$partnerInfo['PCT'] =  $order->get_billing_city();; // Partner City, VarChar(60): Partner's city
-		$partnerInfo['PCN'] = $order->get_billing_country();; // Partner Country, VarChar(60): Partner's country
+		$partnerInfo['PCN'] = 'Romania';; // Partner Country, VarChar(60): Partner's country
 		$partnerInfo['MID'] = $customerId; // MasterSPA ID Client, Numeric(9): MasterSPA Client ID linked to this partner
 		$partnerInfo['DAT'] = date( 'Y-m-d' ); // Date of transmission, VarChar(10): Format YYYY-MM-DD
 		$partnerInfo['TIM'] = date( 'H:i:s' ); // Time of transmission, VarChar(8): Format HH:MM:SS

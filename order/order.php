@@ -18,7 +18,7 @@ class order {
 		$this->soap = new soap();
 	}
 
-	protected function getOrderInfo( $order ,$customerId,$partnerId = 0 ): string {
+	protected function getOrderInfo( $order ,$customerId,$partnerId,$beneficiariesIds,$clintIds ): string {
 		$itemsInfo = [];
 		foreach ( $order->get_items() as $key => $item ) {
 			$nameInfo = explode( '<span> - </span>', $item->get_name() );
@@ -53,8 +53,8 @@ class order {
 		$soapCartInfo['MID'] = $customerId; // Buyer MasterSPA ID, Numeric(9): MasterSPA Client ID for Buyer
 		$soapCartInfo['ACC'] = '1234*********3456'; // Account Number, VarChar(30): Account number of the credit card transaction
 		$soapCartInfo['PRD'] = ''; // Promotion Code, VarChar(20): Promotion code for discount, empty if none
-		$soapCartInfo['BCI'] = '0'; // Client Website ID (Beneficiary), Numeric(9): Website DB ID for the beneficiary, equal to CID if none
-		$soapCartInfo['BMI'] = $customerId; // Beneficiary MasterSPA ID, Numeric(9): MasterSPA Client ID for Beneficiary, equal to MID if none
+		$soapCartInfo['BCI'] = implode('#',$clintIds);; // Client Website ID (Beneficiary), Numeric(9): Website DB ID for the beneficiary, equal to CID if none
+		$soapCartInfo['BMI'] = implode('#',$beneficiariesIds); // Beneficiary MasterSPA ID, Numeric(9): MasterSPA Client ID for Beneficiary, equal to MID if none
 		$soapCartInfo['CRD'] = '1234'; // Voucher/Card Code (Buyer), VarChar(20): Barcode/code from Voucher/Gift Card/Member Card for Buyer
 		$soapCartInfo['BCD'] = ''; // Voucher/Card Code (Family 2), VarChar(20): Voucher/Gift Card for Beneficiary, empty if none
 		$soapCartInfo['CNP'] = '1831028336374'; // Buyer Personal ID, VarChar(13): Buyer's personal ID number
@@ -64,8 +64,8 @@ class order {
 		return $this->soap->arrayToSoapText( $soapCartInfo );
 	}
 
-	public function sendOrderToSoap( $order, $customerId,$partnerId = 0 ): void {
-		$info = $this->getOrderInfo( $order, $customerId ,$partnerId);
+	public function sendOrderToSoap( $order, $customerId,$partnerId,$beneficiariesIds,$clintIds ): void {
+		$info = $this->getOrderInfo( $order, $customerId ,$partnerId,$beneficiariesIds,$clintIds);
 
 		$result = $this->soap->send_curl_request( $this->action, $this->soapRequestForOrderRegistration( $info ) );
 		$this->updateTheOrder($order,$result);

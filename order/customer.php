@@ -18,6 +18,7 @@ class customer {
 	}
 
 
+
 	protected function getOrderInfo( $order ): string {
 		// Initialize SOAP data array for client information
 		$clientInfo = [];
@@ -47,27 +48,56 @@ class customer {
 		return $this->soap->arrayToSoapText( $clientInfo );
 	}
 
+	protected function getOrderInfoByBeneficiary( $beneficiary,$order,$key ): string {
+		// Initialize SOAP data array for client information
 
-	public function sendCustomerToSoap( $order ): string {
+		$customerId = '8888' .$key. $order->get_id();
+		$clientInfo['CID'] = $customerId; // Client Website ID, Numeric(9): Client Website ID (Website DB)
+		$clientInfo['MID'] = ''; // MasterSPA ID, Numeric(9): Empty in request (RQ), filled with MasterSPA Client ID in response (RS)
+		$clientInfo['CFN'] = $beneficiary['first_name']; // First Name, VarChar(60): Client's first name
+		$clientInfo['CLN'] = $beneficiary['last_name']; // Last Name, VarChar(60): Client's last name
+		$clientInfo['CMB'] = $beneficiary['phone']; // Mobile, VarChar(20): Client's mobile phone
+		$clientInfo['CEM'] = $beneficiary['email']; // Email, VarChar(50): Client's email
+		$clientInfo['CLM'] = '0'; // Member, Char(1): "0"=not member, "1"=is member
+		$clientInfo['CSX'] = 'M'; // Sex, Char(1): "M"=Male, "F"=Female
+		$clientInfo['CCT'] = $order->get_billing_city(); // City, VarChar(60): Client's city, default is "Doha"
+		$clientInfo['CCN'] = 'Romania'; // Country, VarChar(60): Client's country, default is "Qatar"
+		$clientInfo['DAT'] = date( 'Y-m-d' ); // Date of transmission, VarChar(10): Format YYYY-MM-DD
+		$clientInfo['TIM'] = date( 'H:i:s' ); // Time of transmission, VarChar(8): Format HH:MM:SS
+		$clientInfo['TYP'] = 'Website'; // Type of Client, VarChar(50): Default is "Website"
+		$clientInfo['DTB'] = '1983-10-28'; // Date of Birth, VarChar(10): Format YYYY-MM-DD
+		$clientInfo['CLH'] = '0'; // Client Group Account, Numeric(9): 0 for website client type, or parent’s MasterSPA Client ID for children
+		$clientInfo['COD'] = $customerId; // QRCode, VarChar(20): RFIDCardID, QRCode, or BarCode for client identification at reception
+		return $this->soap->arrayToSoapText( $clientInfo );
+	}
+
+
+	public function sendCustomerToSoap( $order ): array {
 		$info   = $this->getOrderInfo( $order );
 		$result = $this->soap->send_curl_request( $this->action, $this->soapRequestForCustomerRegistration( $info ) );
 
 		return $this->updateTheCustomer( $order, $result );
 	}
 
-	protected function updateTheCustomer( $order, $result ): string {
+	public function sendBeneficiaryToSoap( $beneficiary,$order,$key ): array {
+		$info   = $this->getOrderInfoByBeneficiary( $beneficiary,$order,$key );
+		$result = $this->soap->send_curl_request( $this->action, $this->soapRequestForCustomerRegistration( $info ) );
+		return [$result['MID'],$result['CID']];
+	}
+
+	protected function updateTheCustomer( $order, $result ): array {
 
 		if ( $result['ERR'] == 'KO' ) {
 			$order->update_status( 'spa-error-status', 'A aparut o eroare la trimiterea datelor catre MasterSPA' );
 			update_post_meta( $order->get_id(), '_custom_field_user_info_success', false );
 			update_post_meta( $order->get_id(), '_custom_field_user_info', json_encode( $result ) );
 
-			return false;
+			return [];
 		}
 		update_post_meta( $order->get_id(), '_custom_field_user_info', json_encode( $result ) );
 		update_post_meta( $order->get_id(), '_custom_field_user_info_success', true );
 
-		return $result['MID'];
+		return [$result['MID'],$result['CID']];
 	}
 
 	private function soapRequestForCustomerRegistration( $info ): string {

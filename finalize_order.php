@@ -40,14 +40,49 @@ class finalize_order {
 		if($custom_field_user_order_success && $custom_field_user_info_success && $custom_field_partner_order_success){
 			return;
 		}
-		$customerId = $this->customer->sendCustomerToSoap( $order );
-		$partnerId = 0;
-		if(trim($order->get_billing_company()) !== ''){
-			$partnerId = $this->partner->sendPartnerToSoap($order,$customerId);
+		$x = 0;
+		foreach ($order->get_items() as $item_id => $item) {
+			$first_name =  wc_get_order_item_meta( $item_id , 'Prenume' );
+			$first_name =  parseMetaToArray( $first_name );
+			$last_name =  wc_get_order_item_meta( $item_id , 'Nume' );
+			$last_name = parseMetaToArray( $last_name );
+			$phone =  wc_get_order_item_meta( $item_id , 'Telefon' );
+			$phone =  parseMetaToArray( $phone );
+			$email = wc_get_order_item_meta( $item_id ,'E-mail' );
+			$email = parseMetaToArray( $email );
+
+			foreach ($first_name as $key => $value) {
+				$beneficiary[$x]['first_name'] = $first_name[$key];
+				$beneficiary[$x]['last_name'] = $last_name[$key];
+				$beneficiary[$x]['phone'] = $phone[$key];
+				$beneficiary[$x]['email'] = $email[$key]; ;
+				$x++;
+			}
 		}
 
-		if($customerId){
-			$this->order->sendOrderToSoap( $order, $customerId,$partnerId );
+		$customerId = $this->customer->sendCustomerToSoap( $order );
+		$beneficiariesInfo=[];
+		$clintIds=[];
+
+		foreach ($beneficiary as $key => $value) {
+			if($value['phone'] === $order->get_billing_phone() && $value['email'] === $order->get_billing_email()){
+				$beneficiariesInfo[] = $customerId;
+				continue;
+			}
+
+			$beneficiariesInfo[] = $this->customer->sendBeneficiaryToSoap( $value ,$order,$key);
+		}
+		foreach ($beneficiariesInfo as $item) {
+			$beneficiariesIds[] = $item[0];
+			$clintIds[] = $item[1];
+		}
+		$partnerId = 0;
+		if(trim($order->get_billing_company()) !== ''){
+			$partnerId = $this->partner->sendPartnerToSoap($order,$customerId[0]);
+		}
+
+		if($customerId[0]){
+			$this->order->sendOrderToSoap( $order, $customerId[0],$partnerId,$beneficiariesIds,$clintIds );
 		}
 
 
