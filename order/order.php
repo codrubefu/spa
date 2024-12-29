@@ -20,23 +20,30 @@ class order {
 
 	protected function getOrderInfo( $order ,$customerId,$partnerId,$beneficiariesIds,$clintIds ): string {
 		$itemsInfo = [];
+		$x=0;
 		foreach ( $order->get_items() as $key => $item ) {
-			$nameInfo = explode( '<span> - </span>', $item->get_name() );
+			while ($q < $item->get_quantity()) {
+				$nameInfo = explode( '<span> - </span>', $item->get_name() );
 
-			if ( count( $nameInfo ) == 2 ) {
-				$itemInfo['name']  = $nameInfo[0];
-			} else {
-				$itemInfo['name']  = $item->get_name();
+				if ( count( $nameInfo ) == 2 ) {
+					$itemInfo['name'] = $nameInfo[0];
+				} else {
+					$itemInfo['name'] = $item->get_name();
+				}
+				$itemInfo['types']    = 'Card Membru';
+				$items['names'][ $x ] = $itemInfo['name'];
+				$items['type'][ $x ]  = $itemInfo['types'];
+
+				$items['quantity'][ $x ]    = 1;
+				$items['unit_prices'][ $x ] = number_format($item->get_total() / $item->get_quantity(), 2);
+				$items['prices'][ $x ] = number_format($item->get_total() / $item->get_quantity(), 2);
+				$items['bcd'][ $x ]      = '';
+				$items['ren'][ $x ]      = '0';
+				$items['crd'][ $x ] = 'CM' . str_pad($order->get_id() . $x, 10, '0', STR_PAD_LEFT);
+				$x ++;
+				$q ++;
 			}
-			$itemInfo['types'] = 'Card Membru';
-			$items['names'][ $key ] = $itemInfo['name'];
-			$items['type'][ $key ]  = $itemInfo['types'];
-
-			$items['quantity'][ $key ]    = $item->get_quantity();
-			$items['unit_prices'][ $key ] = $item->get_total() / $item->get_quantity();
-			$items['prices'][ $key ]      = $item->get_total();
 		}
-
 		$soapCartInfo = [];
 
 		$soapCartInfo['SID'] = $order->get_id(); // Payment Sales ID, Numeric(9): ID of the Payment Order Confirmation from Website DB
@@ -55,10 +62,10 @@ class order {
 		$soapCartInfo['PRD'] = ''; // Promotion Code, VarChar(20): Promotion code for discount, empty if none
 		$soapCartInfo['BCI'] = implode('#',$clintIds);; // Client Website ID (Beneficiary), Numeric(9): Website DB ID for the beneficiary, equal to CID if none
 		$soapCartInfo['BMI'] = implode('#',$beneficiariesIds); // Beneficiary MasterSPA ID, Numeric(9): MasterSPA Client ID for Beneficiary, equal to MID if none
-		$soapCartInfo['CRD'] = '1234'; // Voucher/Card Code (Buyer), VarChar(20): Barcode/code from Voucher/Gift Card/Member Card for Buyer
-		$soapCartInfo['BCD'] = ''; // Voucher/Card Code (Family 2), VarChar(20): Voucher/Gift Card for Beneficiary, empty if none
+		$soapCartInfo['CRD'] = implode( '#', $items['crd'] ); // CM12 cifre   Voucher/Card Code (Buyer), VarChar(20): Barcode/code from Voucher/Gift Card/Member Card for Buyer
+		$soapCartInfo['BCD'] = implode( '#', $items['bcd'] ); // Voucher/Card Code (Family 2), VarChar(20): Voucher/Gift Card for Beneficiary, empty if none
 		$soapCartInfo['CNP'] = '1831028336374'; // Buyer Personal ID, VarChar(13): Buyer's personal ID number
-		$soapCartInfo['REN'] = 0; // Renewal Flag, Char(1): "0"=not renewal, "1"=is renewal
+		$soapCartInfo['REN'] = implode( '#', $items['ren'] );; // Renewal Flag, Char(1): "0"=not renewal, "1"=is renewal
 		$soapCartInfo['TYP'] = implode( '#', $items['type'] );; // List of Type of Sale, VarChar(30): Types of sales separated by '#'
 		$soapCartInfo['PTN'] = $partnerId; // Partner ID, Numeric(9): Company ID for issuing the fiscal invoice
 		return $this->soap->arrayToSoapText( $soapCartInfo );
