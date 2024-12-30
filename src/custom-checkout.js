@@ -1,15 +1,14 @@
 jQuery(document).ready(function ($) {
 
     // Trigger AJAX on form validation/update.
-    $('a.show-form').on('click', function (e) {
+    $(document).on('click','a.show-form', function (e) {
         var dataId = $(this).data('id');
         var order = $(this).data('order');
         var targetRow = $('tr[data-id="' + dataId + '"][data-order="' + order + '"]');
         targetRow.toggle();
 
     });
-
-    $('.modify-item-info').on('click', function (e) {
+    $(document).on('click','.modify-item-info', function (e) {
         e.preventDefault();
         var isValid = true;
         var targetRow = $(this).closest('tr');
@@ -56,7 +55,7 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    $('#update-billing-button').on('click', function (e) {
+    $(document).on('click','#update-billing-button', function (e) {
         e.preventDefault();
         var form = $('#checkout-form');
         isValid = true;
