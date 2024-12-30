@@ -9,3 +9,10 @@
     padding: 10px;
     box-sizing: border-box;
 }
+
+#order_review_heading {
+    margin:1.5em 0 .5em !important;
+}
+form.checkout .woocommerce-checkout-review-order{
+    width: 100% !important;
+}
