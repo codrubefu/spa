@@ -73,6 +73,7 @@ function update_checkout_handler(): void {
 			'billing_city'       => sanitize_text_field( $checkout_data['billing_city'] ),
 			'billing_postcode'   => sanitize_text_field( $checkout_data['billing_postcode'] ),
 			'billing_phone'      => sanitize_text_field( $checkout_data['billing_phone'] ),
+			'billing_company'      => sanitize_text_field( $checkout_data['billing_company'] ),
 		] );
 		WC()->customer->save();
 
@@ -91,7 +92,6 @@ function update_checkout_handler(): void {
 				$_SESSION[ $key ] = sanitize_text_field( $output_array[ $key ] );
 			}
 		}
-		$customer->set_props( $props );
 
 		foreach ( $cart as $cart_item_key => $cart_item ) {
 			$x    = 0;
