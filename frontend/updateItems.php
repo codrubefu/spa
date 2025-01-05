@@ -85,10 +85,10 @@ function update_checkout_handler(): void {
 			'bank' => [ 'label' => __( 'Banca' ), 'placeholder' => __( 'Banca' ) ],
 			'iban' => [ 'label' => __( 'Cont IBAN' ), 'placeholder' => __( 'Cont IBAN' ) ],
 		];
+
 		foreach ( $custom_checkout_fields as $key => $field ) {
 			parse_str($_POST['form_data'], $output_array);
-
-			if ( ! empty( $output_array[ $key ] ) ) {
+			if ( !empty( $output_array[ $key ] ) ) {
 				$_SESSION[ $key ] = sanitize_text_field( $output_array[ $key ] );
 			}
 		}

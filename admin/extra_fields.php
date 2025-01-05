@@ -16,6 +16,7 @@ class CustomCheckoutFields {
 		add_shortcode( 'custom_checkout_fields', [ $this, 'shortcode_custom_checkout_fields' ] );
 
 		$this->custom_checkout_fields = [
+			'type' => [ 'label' => __( 'Type' ), 'placeholder' => __( 'Type' ) ],
 			'billing_cui' => [ 'label' => __( 'Cui' ), 'placeholder' => __( 'CUI' ) ],
 			'reg_com' => [ 'label' => __( 'Reg.Com.' ), 'placeholder' => __( 'Registrul Comertului' ) ],
 			'bank' => [ 'label' => __( 'Banca' ), 'placeholder' => __( 'Banca' ) ],
@@ -32,6 +33,9 @@ class CustomCheckoutFields {
 	// Add the custom fields
 	public function add_custom_checkout_fields( $checkout ) {
 		foreach ( $this->custom_checkout_fields as $key => $field ) {
+			if($key == 'type') {
+				continue;
+			}
 			woocommerce_form_field( $key, array(
 				'type'        => 'text',
 				'class'       => array( 'form-row-wide' ),

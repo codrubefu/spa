@@ -72,12 +72,14 @@ class finalize_order {
 
 			$beneficiariesInfo[] = $this->customer->sendBeneficiaryToSoap( $value ,$order,$key);
 		}
+
 		foreach ($beneficiariesInfo as $item) {
 			$beneficiariesIds[] = $item[0];
 			$clintIds[] = $item[1];
 		}
 		$partnerId = 0;
-		if(trim($order->get_billing_company()) !== ''){
+		$type = get_post_meta( $order->get_id(),'type', true );
+		if(trim($order->get_billing_company()) !== '' && $type == 1){
 			$partnerId = $this->partner->sendPartnerToSoap($order,$customerId[0]);
 		}
 

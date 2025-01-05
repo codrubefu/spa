@@ -39,7 +39,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
                                 <span class="woocommerce-input-wrapper">
                                     <label>
                                         <select id="type" name="type" class="type">
-                                            <option value="0" <?php if($_SESSION['type'] == 0) {echo "selected";} ?>>Persoana fizica</option>
+                                            <option value="2" <?php if($_SESSION['type'] == 2) {echo "selected";} ?>>Persoana fizica</option>
                                             <option value="1" <?php if($_SESSION['type'] == 1) {echo "selected";} ?>>Persoana juridica</option>
                                         </select>
                                     </label>
