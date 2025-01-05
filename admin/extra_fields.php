@@ -120,7 +120,7 @@ class CustomCheckoutFields {
 		$custom_js = "
             jQuery(document).ready(function($) {
                 $('#type').on('change', function() {
-                    if ($(this).val() == '0') {
+                    if ($(this).val() == '2') {
                         $('#custom_checkout_fields').hide();
                     } else if ($(this).val() == '1') {
                         $('#custom_checkout_fields').show();
