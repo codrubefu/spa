@@ -35,7 +35,7 @@ class order {
 				$items['type'][ $x ]  = $itemInfo['types'];
 
 				$items['quantity'][ $x ]    = 1;
-				$items['unit_prices'][ $x ] = number_format($item->get_total() / $item->get_quantity(), 2);
+				$items['unit_prices'][ $x ] = number_format($item->get_total() / $item->get_quantity(), 2, '.', '');
 				$items['prices'][ $x ] = number_format($item->get_total() / $item->get_quantity(), 2);
 				$items['bcd'][ $x ]      = '';
 				$items['ren'][ $x ]      = '0';

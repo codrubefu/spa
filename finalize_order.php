@@ -77,18 +77,16 @@ class finalize_order {
 			$beneficiariesIds[] = $item[0];
 			$clintIds[] = $item[1];
 		}
+
 		$partnerId = 0;
-		$type = get_post_meta( $order->get_id(),'type', true );
-		if(trim($order->get_billing_company()) !== '' && $type == 1){
+		if(trim($order->get_billing_company()) !== ''){
 			$partnerId = $this->partner->sendPartnerToSoap($order,$customerId[0]);
 		}
 
 		if($customerId[0]){
 			$this->order->sendOrderToSoap( $order, $customerId[0],$partnerId,$beneficiariesIds,$clintIds );
 		}
-
-
-
+		
 		if ( $order ) {
 			// Your custom code here
 			error_log( 'Order ' . $order_id . ' has been completed and paid.' );
