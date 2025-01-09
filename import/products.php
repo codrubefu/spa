@@ -78,11 +78,11 @@ class products {
 			$this->create_variations( $product, $product_id, $price_variations );
 		}
 
-		$this->add_product_to_category( $product_id, $product_data['TCL'] );
+		$this->add_product_to_category( $product_id, $product_data['TGR'] );
 		$product->save();
 	}
 
-	private function initialize_product( $existing_product_id, $sku, $variation_count ): WC_Product_Variable|WC_Product {
+	private function initialize_product( $existing_product_id, $sku, $variation_count ) {
 		if ( $existing_product_id ) {
 			return $variation_count > 2
 				? new WC_Product_Variable( $existing_product_id )
@@ -97,6 +97,7 @@ class products {
 
 	private function set_basic_product_data( $product, $product_data, $price_variations ): void {
 		$product->set_name( $product_data['ART'] );
+		$product->set_short_description( $product_data['TDS'] );
 		$product->set_description( $product_data['TBS'] );
 
 		if ( count( $price_variations ) < 3 ) {

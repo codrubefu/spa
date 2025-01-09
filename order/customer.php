@@ -25,7 +25,7 @@ class customer {
 		$customerId = $order->get_customer_id();
 
 		if ( $customerId == 0 ) {
-			$customerId = '9999' . $order->get_id();
+			$customerId = '99' . $order->get_id();
 		}
 
 		$clientInfo['CID'] = $customerId; // Client Website ID, Numeric(9): Client Website ID (Website DB)
@@ -51,7 +51,7 @@ class customer {
 	protected function getOrderInfoByBeneficiary( $beneficiary,$order,$key ): string {
 		// Initialize SOAP data array for client information
 
-		$customerId = '8888' .$key. $order->get_id();
+		$customerId = '88' .$key. $order->get_id();
 		$clientInfo['CID'] = $customerId; // Client Website ID, Numeric(9): Client Website ID (Website DB)
 		$clientInfo['MID'] = ''; // MasterSPA ID, Numeric(9): Empty in request (RQ), filled with MasterSPA Client ID in response (RS)
 		$clientInfo['CFN'] = $beneficiary['first_name']; // First Name, VarChar(60): Client's first name

@@ -21,6 +21,7 @@ class order {
 	protected function getOrderInfo( $order ,$customerId,$partnerId,$beneficiariesIds,$clintIds ): string {
 		$itemsInfo = [];
 		$x=0;
+		$q=0;
 		foreach ( $order->get_items() as $key => $item ) {
 			while ($q < $item->get_quantity()) {
 				$nameInfo = explode( '<span> - </span>', $item->get_name() );

@@ -47,7 +47,7 @@ class soap {
 		return $soap_text;
 	}
 
-	public function send_curl_request( $action, $soap_request, $parse = true ): bool|string|null|array {
+	public function send_curl_request( $action, $soap_request, $parse = true ) {
 		$url = $this->import_endpoint_url;
 		// Initialize cURL test
 		$ch = curl_init( $url );

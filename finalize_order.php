@@ -86,7 +86,7 @@ class finalize_order {
 		if($customerId[0]){
 			$this->order->sendOrderToSoap( $order, $customerId[0],$partnerId,$beneficiariesIds,$clintIds );
 		}
-		
+
 		if ( $order ) {
 			// Your custom code here
 			error_log( 'Order ' . $order_id . ' has been completed and paid.' );

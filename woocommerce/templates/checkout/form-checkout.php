@@ -39,13 +39,13 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
                                 <span class="woocommerce-input-wrapper">
                                     <label>
                                         <select id="type" name="type" class="type">
-                                            <option value="2" <?php if($_SESSION['type'] == 2) {echo "selected";} ?>>Persoana fizica</option>
-                                            <option value="1" <?php if($_SESSION['type'] == 1) {echo "selected";} ?>>Persoana juridica</option>
+                                            <option value="2" <?php if(isset($_SESSION['type']) && $_SESSION['type'] == 2) {echo "selected";} ?>>Persoana fizica</option>
+                                            <option value="1" <?php if(isset($_SESSION['type']) && $_SESSION['type'] == 1) {echo "selected";} ?>>Persoana juridica</option>
                                         </select>
                                     </label>
                                 </span>
                             </p>
-                            <div id="custom_checkout_fields" <?php if($_SESSION['type'] != 1) {echo 'style="display: none"';} else {echo 'style="display: block"';} ?> >
+                            <div id="custom_checkout_fields" <?php if(!isset($_SESSION['type']) || $_SESSION['type'] != 1) {echo 'style="display: none"';} else {echo 'style="display: block"';} ?> >
 								<?php woocommerce_form_field( 'billing_company', $fields['billing_company'], $checkout->get_value( 'billing_company' ) ); ?>
 								<?php echo do_shortcode( '[custom_checkout_fields]' ); ?>
                             </div>

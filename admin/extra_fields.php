@@ -42,7 +42,7 @@ class CustomCheckoutFields {
 				'label'       => __( $field['label'] ),
 				'placeholder' => __( $field['placeholder'] ),
 				'required'    => false,
-			), $_SESSION[ $key ] );
+			), $_SESSION[ $key ]??'' );
 		}
 	}
 
