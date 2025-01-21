@@ -16,3 +16,13 @@
 form.checkout .woocommerce-checkout-review-order{
     width: 100% !important;
 }
+h2.woocommerce-loop-product__title {
+	display:none;
+}
+h2.woocommerce-loop-product__title.visible {
+	display:block;
+}
+
+.woocommerce-product-details__short-description {
+	display:none;
+}

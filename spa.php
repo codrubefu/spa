@@ -14,7 +14,6 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 function include_plugin_files(): void {
-	require_once plugin_dir_path( __FILE__ ) . 'bomba.php';
 	require_once plugin_dir_path( __FILE__ ) . 'helper/soap.php';
 
 	require_once plugin_dir_path( __FILE__ ) . 'admin/extra_fields.php';
@@ -114,12 +113,11 @@ error_reporting( E_ALL );
 class spa {
 
 	private products $products;
-	private bomba $bomba;
+
 
 	public function __construct() {
 		include_plugin_files();
 		$this->products = new products();
-		$this->bomba = new bomba();
 		
 		// Hook pentru importul periodic de produse
 		add_action( 'init', [ $this, 'schedule_import' ] );
@@ -173,7 +171,7 @@ class spa {
 new spa();
 
 function enqueue_custom_styles() {
-	wp_enqueue_style( 'custom-styles', plugin_dir_url( __FILE__ ) . 'src/styles.css' );
+	wp_enqueue_style( 'custom-styles', plugin_dir_url( __FILE__ ) . 'src/styles.css', [], '1.2' );
 }
 
 add_action( 'wp_enqueue_scripts', 'enqueue_custom_styles' );
@@ -191,3 +189,20 @@ function dump( $str ) {
 	echo '</pre>';
 }
 
+// Remove the default product title from the category loop
+	remove_action( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title', 10 );
+
+// Add short description instead of the title in the product loop
+add_action( 'woocommerce_shop_loop_item_title', 'custom_replace_title_with_short_description', 10 );
+
+function custom_replace_title_with_short_description() {
+	global $post;
+
+	// Get the short description (excerpt)
+	$short_description = get_post_field( 'post_excerpt', $post->ID );
+
+	// Output the short description if it exists
+	if ( $short_description ) {
+		echo '<h2 class="woocommerce-loop-product__title visible"><a href="' . get_permalink( $post->ID ) . '">' . $short_description . '</a></h2>';
+	}
+}
