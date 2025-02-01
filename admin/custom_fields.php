@@ -66,10 +66,10 @@ function display_custom_fields_on_product_page() {
 	$contra_indicatii = get_post_meta($post->ID, '_contra_indicatii', true);
 
 	if ($beneficii || $indicatii || $contra_indicatii) {
-		echo '<div class="custom-fields-container">';
-		if ($beneficii) echo '<div class="col-xs-3"><h2>Beneficii:</h2> ' . wp_kses_post($beneficii) . '</div>';
-		if ($indicatii) echo '<div><h2>Indicatii:</h2> ' . wp_kses_post($indicatii) . '</div>';
-		if ($contra_indicatii) echo '<div><h2>Contra Indicatii:</h2> ' . wp_kses_post($contra_indicatii) . '</div>';
+		echo '<div class="beneficii">';
+		if ($beneficii) echo '<div ><h2><span>Beneficii:</span></h2> ' . wp_kses_post($beneficii) . '</div>';
+		if ($indicatii) echo '<div><h2><span>Indicatii:</span></h2> ' . wp_kses_post($indicatii) . '</div>';
+		if ($contra_indicatii) echo '<div><h2><span>Contra Indicatii:</span></h2> ' . wp_kses_post($contra_indicatii) . '</div>';
 		echo '</div>';
 	}
 }

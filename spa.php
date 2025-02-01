@@ -6,12 +6,16 @@ Version: 1.0
 Author: Codrut
 Author URI: https://befu.ro
 */
+add_action('init', 'start_session', 1);
+
+function start_session() {
+	if (session_status() == PHP_SESSION_NONE) {
+		session_start();
+	}
+}
 
 
 use import\products;
-if (session_status() == PHP_SESSION_NONE) {
-	session_start(); // Start the session
-}
 
 function include_plugin_files(): void {
 	require_once plugin_dir_path( __FILE__ ) . 'helper/soap.php';

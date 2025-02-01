@@ -16,7 +16,7 @@ class finalize_order {
 		$this->customer = new customer();
 		$this->partner  = new partner();
 		// Hook into the order status completed action
-		add_action( 'woocommerce_order_status_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
+		add_action( 'woocommerce_order_status_processing', array( $this, 'onOrderCompleted' ), 10, 1 );
 	}
 
 	// Define the function that will run when an order is completed

@@ -38,7 +38,7 @@ class order {
 				$items['quantity'][ $x ]    = 1;
 				$items['unit_prices'][ $x ] = number_format($item->get_total() / $item->get_quantity(), 2, '.', '');
 				$items['prices'][ $x ] = number_format($item->get_total() / $item->get_quantity(), 2);
-				$items['bcd'][ $x ]      = '';
+				$items['bcd'][ $x ]      = 'Voucher';
 				$items['ren'][ $x ]      = '0';
 				$items['crd'][ $x ] = 'CM' . str_pad($order->get_id() . $x, 10, '0', STR_PAD_LEFT);
 				$x ++;
