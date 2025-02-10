@@ -27,15 +27,21 @@ class finalize_order {
 			'id' => $order_id,
 		);
 		$orders = wc_get_orders( $args );
+		
 		if ( ! $orders ) {
 			error_log( 'Order not found: ' . $order_id );
 			return;
 		}
-		$order = $orders[0];
+		foreach ( $orders as $o ) {
+			if($o->get_id() == $order_id){
+				$order = $o;
+			}
+		}
 
 		$custom_field_user_info_success  = get_post_meta( $order->get_id(), '_custom_field_user_info_success', true );
 		$custom_field_user_order_success = get_post_meta( $order->get_id(), '_custom_field_user_order_success', true );
 		$custom_field_partner_order_success = get_post_meta( $order->get_id(), '_custom_field_partner_order_success', true );
+		$type = get_post_meta( $order->get_id(), 'type', true );
 
 		if($custom_field_user_order_success && $custom_field_user_info_success && $custom_field_partner_order_success){
 			return;
@@ -61,6 +67,7 @@ class finalize_order {
 		}
 
 		$customerId = $this->customer->sendCustomerToSoap( $order );
+	
 		$beneficiariesInfo=[];
 		$clintIds=[];
 
@@ -79,11 +86,12 @@ class finalize_order {
 		}
 
 		$partnerId = 0;
-		if(trim($order->get_billing_company()) !== ''){
+
+		if(trim($order->get_billing_company()) !== '' && $type == 1){
 			$partnerId = $this->partner->sendPartnerToSoap($order,$customerId[0]);
 		}
 
-		if($customerId[0]){
+		if($customerId[0] ){
 			$this->order->sendOrderToSoap( $order, $customerId[0],$partnerId,$beneficiariesIds,$clintIds );
 		}
 
