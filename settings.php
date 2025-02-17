@@ -61,7 +61,7 @@ function master_spa_register_settings() {
 	// Add Email for Reports field
 	add_settings_field(
 		'master_spa_email_for_reports',            // Field ID
-		__('Email pentru rapoarte', 'master-spa'),     // Title
+		__('Email-uri pentru mesaje de eroare ', 'master-spa'),     // Title
 		'master_spa_email_for_reports_callback',   // Callback
 		'master-spa-options',                      // Page
 		'master_spa_main_section'                  // Section
@@ -90,7 +90,7 @@ function master_spa_server_address_callback() {
 // Callback for the Email for Reports field
 function master_spa_email_for_reports_callback() {
 	$value = get_option('master_spa_email_for_reports', '');
-	echo '<input type="email" id="master_spa_email_for_reports" name="master_spa_email_for_reports" value="' . esc_attr($value) . '" class="regular-text" />';
+	echo '<textarea rows="10"  id="master_spa_email_for_reports" name="master_spa_email_for_reports"  class="regular-text" >' . esc_attr($value) . '</textarea>';
 }
 
 // Callback for the new "Ruleaza importul" section

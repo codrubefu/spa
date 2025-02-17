@@ -32,7 +32,11 @@ class customer {
 		$clientInfo['MID'] = ''; // MasterSPA ID, Numeric(9): Empty in request (RQ), filled with MasterSPA Client ID in response (RS)
 		$clientInfo['CFN'] = $order->get_billing_first_name(); // First Name, VarChar(60): Client's first name
 		$clientInfo['CLN'] = $order->get_billing_last_name(); // Last Name, VarChar(60): Client's last name
-		$clientInfo['CMB'] = $order->get_billing_phone(); // Mobile, VarChar(20): Client's mobile phone
+		$phone = 0;
+		if($order->get_billing_phone()){
+			$phone  = $order->get_billing_phone();
+		}
+		$clientInfo['CMB'] = $phone ; // Mobile, VarChar(20): Client's mobile phone
 		$clientInfo['CEM'] = $order->get_billing_email(); // Email, VarChar(50): Client's email
 		$clientInfo['CLM'] = '0'; // Member, Char(1): "0"=not member, "1"=is member
 		$clientInfo['CSX'] = 'M'; // Sex, Char(1): "M"=Male, "F"=Female
@@ -56,7 +60,11 @@ class customer {
 		$clientInfo['MID'] = ''; // MasterSPA ID, Numeric(9): Empty in request (RQ), filled with MasterSPA Client ID in response (RS)
 		$clientInfo['CFN'] = $beneficiary['first_name']; // First Name, VarChar(60): Client's first name
 		$clientInfo['CLN'] = $beneficiary['last_name']; // Last Name, VarChar(60): Client's last name
-		$clientInfo['CMB'] = $beneficiary['phone']; // Mobile, VarChar(20): Client's mobile phone
+		$phone = 0;
+		if( $beneficiary['phone']){
+			$phone  =  $beneficiary['phone'];
+		}
+		$clientInfo['CMB'] = $phone; // Mobile, VarChar(20): Client's mobile phone
 		$clientInfo['CEM'] = $beneficiary['email']; // Email, VarChar(50): Client's email
 		$clientInfo['CLM'] = '0'; // Member, Char(1): "0"=not member, "1"=is member
 		$clientInfo['CSX'] = 'M'; // Sex, Char(1): "M"=Male, "F"=Female

@@ -72,10 +72,14 @@ class soap {
 		$header_size = curl_getinfo( $ch, CURLINFO_HEADER_SIZE );
 		$header      = substr( $response, 0, $header_size );
 		$body        = substr( $response, $header_size );
-
 		// Check for errors
 		if ( $response === false || $http_code !== 200 ) {
+			$recipients = get_option( 'master_spa_email_for_reports', '' );
+			$recipients = explode( "\n", $recipients );
+			$recipients = array_map('trim', $recipients);
 
+			$error_message = "Error: HTTP Code $http_code\nRequest: $soap_request";
+			wp_mail( $recipients, 'SOAP Request Error', $error_message );
 			return [
 				'ERR'       => 'KO',
 				'HTTP_CODE' => $http_code,
