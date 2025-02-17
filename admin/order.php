@@ -7,7 +7,9 @@ function display_custom_fields_in_admin_order( $order ) {
 	$custom_partner_order_info         = get_post_meta( $order->get_id(), '_custom_field_order_info', true );
 	$custom_field_order_info         = get_post_meta( $order->get_id(), '_custom_field_order_info', true );
 	$custom_field_user_info_success  = get_post_meta( $order->get_id(), '_custom_field_user_info_success', true );
-	if ( $custom_field_user_info_success == 1 && $custom_field_order_info == 1 ) {
+	$custom_field_order_info_success  = get_post_meta( $order->get_id(), '_custom_field_user_order_success', true );
+
+	if ( $custom_field_user_info_success == 1 && $custom_field_order_info_success == 1 ) {
 		echo '<p style="color:green;font-size:15px"><strong>Spa Soft Info:</strong> Successfully sent to Spa Soft</p>';
 	} else {
 		echo '<p  style="color:red;font-size:15px"><strong>Spa Soft Info:</strong> Failed to send to Spa Soft</p>';
